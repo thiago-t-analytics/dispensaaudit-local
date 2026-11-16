@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page { size: A4; margin: 1.5cm 1.2cm; }
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      font-size: 10pt;
+      color: #2E2E2E;
+      line-height: 1.5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #3A506B;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .header h1 { font-size: 18pt; color: #3A506B; margin: 0; }
+    .header .periodo { font-size: 10pt; color: #6B7280; text-align: right; }
+    .resumo {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .card {
+      flex: 1;
+      min-width: 100px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+    .card .label { font-size: 8pt; color: #6B7280; text-transform: uppercase; }
+    .card .valor { font-size: 18pt; font-weight: bold; color: #3A506B; }
+    .secao h2 {
+      font-size: 11pt;
+      color: #3A506B;
+      background: #F1F5F9;
+      padding: 6px 10px;
+      margin: 20px 0 8px 0;
+      border-left: 3px solid #FFC107;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+    table th {
+      background: #3A506B;
+      color: white;
+      padding: 6px 8px;
+      text-align: left;
+      font-size: 8pt;
+      text-transform: uppercase;
+    }
+    table td { padding: 5px 8px; border-bottom: 1px solid #E2E8F0; }
+    table tr:nth-child(even) td { background: #FAFBFC; }
+    .status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 8pt;
+      font-weight: bold;
+    }
+    .status.Ativa { background: #E8F5E9; color: #2E7D32; }
+    .status.Concluida { background: #FFF3E0; color: #E65100; }
+    .status.Excluida { background: #E2E5E7; color: #6B7280; }
+    .footer {
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px solid #E2E8F0;
+      font-size: 8pt;
+      color: #6B7280;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>Relatório por Farmacêutico</h1>
+      <div style="font-size: 9pt; color: #6B7280;">
+        Não Conformidades na Dispensação
+      </div>
+    </div>
+    <div class="periodo">
+      <div><strong>{{farmaceutico_nome}}</strong></div>
+      <div>Período: {{periodo}}</div>
+    </div>
+  </div>
+
+  <!-- Resumo -->
+  <div class="resumo">
+    <div class="card">
+      <div class="label">Total</div>
+      <div class="valor">{{total}}</div>
+    </div>
+    <div class="card">
+      <div class="label">Ativas</div>
+      <div class="valor" style="color: #4CAF50;">{{ativas}}</div>
+    </div>
+    <div class="card">
+      <div class="label">Concluídas</div>
+      <div class="valor" style="color: #FF9800;">{{concluidas}}</div>
+    </div>
+    <div class="card">
+      <div class="label">Tipo Mais Frequente</div>
+      <div class="valor" style="font-size: 11pt;">{{tipo_mais_frequente}}</div>
+    </div>
+  </div>
+
+  <!-- Tabela de ocorrências -->
+  <div class="secao">
+    <h2>Ocorrências Detalhadas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Prontuário</th>
+          <th>Medicamento</th>
+          <th>Tipo de Erro</th>
+          <th>Setor</th>
+          <th>Qtd</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#ocorrencias}}
+        <tr>
+          <td>{{data_br}}</td>
+          <td>{{prontuario}}</td>
+          <td>{{medicamento_nome}}</td>
+          <td>{{tipo_erro_descricao}}</td>
+          <td>{{setor_nome}}</td>
+          <td>{{quantidade_prescrita}} / {{quantidade_dispensada}}</td>
+          <td><span class="status {{status}}">{{status}}</span></td>
+        </tr>
+        {{/ocorrencias}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div>Emitido em: {{data_emissao_br}}</div>
+    <div>DispensaAudit v0.1.0</div>
+  </div>
+
+</body>
+</html>

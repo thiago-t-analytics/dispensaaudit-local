@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DispensaAudit — Gestão de Não Conformidades</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SIDEBAR
+       ═══════════════════════════════════════════════════════ -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h1>DispensaAudit</h1>
+      <small>Não Conformidades na Dispensação</small>
+    </div>
+
+    <div class="nav-item active" data-page="dashboard">
+      <span>📊</span><span>Dashboard</span>
+    </div>
+    <div class="nav-item" data-page="ocorrencias">
+      <span>📝</span><span>Ocorrências</span>
+    </div>
+    <div class="nav-item" data-page="configuracoes">
+      <span>⚙️</span><span>Configurações</span>
+    </div>
+    <div class="nav-item" data-page="logs">
+      <span>📋</span><span>Logs</span>
+    </div>
+
+    <div class="sidebar-footer">
+      <div>H-Supply Vision</div>
+      <div style="font-size: 10px; opacity: 0.6; margin-top: 4px;">v0.1.0</div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════════════════ -->
+  <div class="main-content">
+    <header class="header">
+      <div class="header-left">
+        <h2 id="pageTitle">Dashboard</h2>
+      </div>
+      <div class="header-right">
+        <div class="user-info">
+          <div class="avatar" id="userAvatar">?</div>
+          <span id="userName">—</span>
+        </div>
+        <span class="date-time" id="currentDateTime"></span>
+      </div>
+    </header>
+
+    <!-- ── PAGE: DASHBOARD ────────────────────────────────── -->
+    <div class="page active" id="page-dashboard">
+      <!-- Filtros -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>Período</label>
+          <select id="filterPeriodo">
+            <option value="hoje">Hoje</option>
+            <option value="7dias">Últimos 7 dias</option>
+            <option value="30dias" selected>Últimos 30 dias</option>
+            <option value="mes">Mês atual</option>
+            <option value="todos">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Status</label>
+          <select id="filterStatus">
+            <option value="todas" selected>Todas</option>
+            <option value="Ativa">Ativas</option>
+            <option value="Concluida">Concluídas</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Plantão</label>
+          <select id="filterPlantao">
+            <option value="">Todos</option>
+            <option value="Diurno">Diurno</option>
+            <option value="Noturno">Noturno</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Setor</label>
+          <select id="filterSetor">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Tipo de Erro</label>
+          <select id="filterTipoErro">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Farmacêutico</label>
+          <select id="filterFarmaceutico">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="Dashboard.carregar()">
+            🔄 Atualizar
+          </button>
+        </div>
+        <div class="filter-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-pdf" onclick="Dashboard.gerarPdfGerencial()">
+            📄 PDF Gerencial
+          </button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid" id="kpiGrid"></div>
+
+      <!-- Gráficos -->
+      <div class="charts-grid" id="chartsGrid"></div>
+
+      <!-- Tabela -->
+      <div class="table-wrapper">
+        <div class="table-header">
+          <h3>Ocorrências</h3>
+          <input type="text" id="tableSearch" placeholder="Buscar..." oninput="Dashboard.filtrarTabela()">
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Prontuário</th>
+                <th>Medicamento</th>
+                <th>Tipo de Erro</th>
+                <th>Farmacêutico</th>
+                <th>Setor</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <span id="tableInfo">—</span>
+          <div class="pagination" id="tablePagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: OCORRÊNCIAS ──────────────────────────────── -->
+    <div class="page" id="page-ocorrencias">
+      <div class="form-card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3>Registrar Nova Ocorrência</h3>
+          <div style="text-align: right;">
+            <span style="font-size: 13px; color: #6B7280;">Próximo ID:</span>
+            <strong id="proximoIdOcorrencia" style="font-size: 18px; color: #3A506B;">
+              Calculando...
+            </strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Identificação -->
+        <div class="form-card">
+          <h4>Identificação</h4>
+          <div class="form-group">
+            <label>Data da Ocorrência <span class="required">*</span></label>
+            <input type="date" id="ocDataOcorrencia">
+          </div>
+          <div class="form-group">
+            <label>Prontuário <span class="required">*</span></label>
+            <input type="text" id="ocProntuario" placeholder="Ex: 123456789">
+          </div>
+          <div class="form-group">
+            <label>Número da Prescrição <span class="required">*</span></label>
+            <input type="text" id="ocNumeroPrescricao" placeholder="Ex: 123456789">
+          </div>
+        </div>
+
+        <!-- Medicamento -->
+        <div class="form-card">
+          <h4>Medicamento e Erro</h4>
+          <div class="form-group">
+            <label>Medicamento <span class="required">*</span></label>
+            <select id="ocMedicamento">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Erro <span class="required">*</span></label>
+            <select id="ocTipoErro">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Setor <span class="required">*</span></label>
+            <select id="ocSetor">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quantidades -->
+        <div class="form-card">
+          <h4>Quantidades</h4>
+          <div class="form-group">
+            <label>Quantidade Prescrita <span class="required">*</span></label>
+            <input type="number" id="ocQuantidadePrescrita" step="0.01" min="0" oninput="Ocorrencias.calcularDiferenca()">
+          </div>
+          <div class="form-group">
+            <label>Quantidade Dispensada</label>
+            <input type="number" id="ocQuantidadeDispensada" step="0.01" min="0" oninput="Ocorrencias.calcularDiferenca()">
+          </div>
+          <div class="form-group">
+            <label>Diferença (automático)</label>
+            <div class="calc-display" id="ocDiferencaDisplay">0</div>
+          </div>
+        </div>
+
+        <!-- Horários -->
+        <div class="form-card">
+          <h4>Horários</h4>
+          <div class="form-group">
+            <label>Hora da Prescrição</label>
+            <input type="time" id="ocHoraPrescricao" oninput="Ocorrencias.calcularHorario()">
+          </div>
+          <div class="form-group">
+            <label>Hora da Dispensação</label>
+            <input type="time" id="ocHoraDispensacao" oninput="Ocorrencias.calcularHorario()">
+          </div>
+          <div class="form-group">
+            <label>Classificação (automático)</label>
+            <div class="calc-display" id="ocClassificacaoDisplay">Aguardando horários</div>
+          </div>
+        </div>
+
+        <!-- Equipe -->
+        <div class="form-card">
+          <h4>Equipe</h4>
+          <div class="form-group">
+            <label>Plantão <span class="required">*</span></label>
+            <select id="ocPlantao" onchange="Ocorrencias.carregarFarmaceuticos()">
+              <option value="">Selecione...</option>
+              <option value="Diurno">Diurno</option>
+              <option value="Noturno">Noturno</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Farmacêutico <span class="required">*</span></label>
+            <select id="ocFarmaceutico" onchange="Ocorrencias.carregarAssistentes()">
+              <option value="">Selecione o plantão primeiro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="checkbox-inline">
+              <input type="checkbox" id="ocErroFarmaceutico" onchange="Ocorrencias.toggleResponsavelErro()">
+              <label for="ocErroFarmaceutico">Erro do farmacêutico</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Assistente</label>
+            <select id="ocAssistente">
+              <option value="">Selecione o farmacêutico primeiro</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Observações -->
+        <div class="form-card">
+          <h4>Observações</h4>
+          <div class="form-group">
+            <label>Observações (opcional)</label>
+            <textarea id="ocObservacoes" rows="4" placeholder="Informações adicionais..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="Ocorrencias.limpar()">Limpar</button>
+        <button class="btn btn-primary" onclick="Ocorrencias.salvar()">💾 Salvar Ocorrência</button>
+      </div>
+    </div>
+
+    <!-- ── PAGE: CONFIGURAÇÕES ────────────────────────────── -->
+    <div class="page" id="page-configuracoes">
+      <div class="config-tabs">
+        <button class="tab active" data-tab="medicamentos" onclick="Cruds.mudarTab('medicamentos')">Medicamentos</button>
+        <button class="tab" data-tab="tiposErro" onclick="Cruds.mudarTab('tiposErro')">Tipos de Erro</button>
+        <button class="tab" data-tab="setores" onclick="Cruds.mudarTab('setores')">Setores</button>
+        <button class="tab" data-tab="farmaceuticos" onclick="Cruds.mudarTab('farmaceuticos')">Farmacêuticos</button>
+        <button class="tab" data-tab="assistentes" onclick="Cruds.mudarTab('assistentes')">Assistentes</button>
+      </div>
+      <div id="configContent"></div>
+    </div>
+
+    <!-- ── PAGE: LOGS ─────────────────────────────────────── -->
+    <div class="page" id="page-logs">
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>Ação</label>
+          <select id="logFilterAcao">
+            <option value="">Todas</option>
+            <option value="Cadastro">Cadastro</option>
+            <option value="Edição">Edição</option>
+            <option value="Exclusão">Exclusão</option>
+            <option value="Exclusão (lógica)">Exclusão (lógica)</option>
+            <option value="Atualização de Status">Atualização de Status</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Tabela</label>
+          <select id="logFilterTabela">
+            <option value="">Todas</option>
+            <option value="ocorrencias">Ocorrências</option>
+            <option value="medicamentos">Medicamentos</option>
+            <option value="tipos_erro">Tipos de Erro</option>
+            <option value="setores">Setores</option>
+            <option value="farmaceuticos">Farmacêuticos</option>
+            <option value="assistentes">Assistentes</option>
+            <option value="usuarios">Usuários</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="Logs.carregar()">🔍 Filtrar</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-header">
+          <h3>Registro de Auditoria</h3>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Usuário</th>
+                <th>Ação</th>
+                <th>Tabela</th>
+                <th>Registro</th>
+              </tr>
+            </thead>
+            <tbody id="logTableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <span id="logInfo">—</span>
+          <div class="pagination" id="logPagination"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MODAL GENÉRICO (CRUD, confirmações, detalhes)
+       ═══════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Título</h3>
+        <button class="modal-close" onclick="UI.fecharModal()">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MODAL DE SELEÇÃO DE USUÁRIO (obrigatório)
+       ═══════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="userModalOverlay">
+    <div class="modal" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Bem-vindo(a)!</h3>
+      </div>
+      <div style="padding: 0 24px 24px;">
+        <p style="margin-bottom: 16px; color: #6B7280;">
+          Para prosseguir, selecione seu nome. Isso garante que todas
+          as suas ações sejam registradas na auditoria.
+        </p>
+        <div class="form-group">
+          <label>Seu Nome <span class="required">*</span></label>
+          <select id="userSelect">
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+        <div class="form-actions" style="margin-top: 16px;">
+          <button class="btn btn-primary" id="btnConfirmUser" onclick="App.confirmarUsuario()">
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       LOADING OVERLAY
+       ═══════════════════════════════════════════════════════ -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p id="loadingMessage">Carregando...</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TOAST CONTAINER
+       ═══════════════════════════════════════════════════════ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS (ordem importa!)
+       ═══════════════════════════════════════════════════════ -->
+  <script src="/js/state.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/ocorrencias.js"></script>
+  <script src="/js/cruds.js"></script>
+  <script src="/js/logs.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

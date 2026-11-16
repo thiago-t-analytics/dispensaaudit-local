@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Criar estrutura completa: dispensaaudit-local + src",
+      "type": "shell",
+      "command": "node",
+      "args": ["${workspaceFolder}/scripts/create-structure.js"],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    }
+  ]
+}

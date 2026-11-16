@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page { size: A4; margin: 1.5cm 1.2cm; }
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      font-size: 10pt;
+      color: #2E2E2E;
+      line-height: 1.5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #3A506B;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .header h1 { font-size: 18pt; color: #3A506B; margin: 0; }
+    .header .periodo { font-size: 10pt; color: #6B7280; text-align: right; }
+    .resumo-executivo {
+      background: #F8FAFC;
+      border-left: 3px solid #3A506B;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+    }
+    .resumo-executivo p { margin: 0 0 8px 0; }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+    .card .label {
+      font-size: 8pt;
+      color: #6B7280;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card .valor { font-size: 16pt; font-weight: bold; color: #3A506B; }
+    .card .sub { font-size: 8pt; color: #6B7280; }
+    .secao h2 {
+      font-size: 11pt;
+      color: #3A506B;
+      background: #F1F5F9;
+      padding: 6px 10px;
+      margin: 20px 0 8px 0;
+      border-left: 3px solid #FFC107;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+    table th {
+      background: #3A506B;
+      color: white;
+      padding: 6px 8px;
+      text-align: left;
+      font-size: 8pt;
+      text-transform: uppercase;
+    }
+    table td { padding: 5px 8px; border-bottom: 1px solid #E2E8F0; }
+    table tr:nth-child(even) td { background: #FAFBFC; }
+    .barra-container {
+      background: #E2E8F0;
+      height: 18px;
+      border-radius: 9px;
+      overflow: hidden;
+      margin: 4px 0;
+    }
+    .barra {
+      background: #3A506B;
+      height: 100%;
+      color: white;
+      font-size: 8pt;
+      padding-left: 6px;
+      line-height: 18px;
+      font-weight: bold;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px solid #E2E8F0;
+      font-size: 8pt;
+      color: #6B7280;
+      display: flex;
+      justify-content: space-between;
+    }
+    .assinatura {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .assinatura-linha {
+      width: 300px;
+      border-top: 1px solid #2E2E2E;
+      margin: 0 auto;
+    }
+    .assinatura-texto {
+      margin-top: 5px;
+      font-size: 9pt;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>Relatório Gerencial</h1>
+      <div style="font-size: 9pt; color: #6B7280;">
+        Indicadores de Não Conformidades na Dispensação
+      </div>
+    </div>
+    <div class="periodo">
+      <div>Período: {{periodo}}</div>
+      <div>Emissão: {{data_emissao_br}}</div>
+    </div>
+  </div>
+
+  <!-- Resumo Executivo -->
+  <div class="resumo-executivo">
+    <p><strong>Resumo Executivo</strong></p>
+    <p>
+      Durante o período analisado, foram registradas <strong>{{total}}</strong>
+      ocorrências de não conformidade na dispensação. Destas,
+      <strong>{{ativas}}</strong> ({{percentual_ativas}}%) permanecem ativas
+      e <strong>{{concluidas}}</strong> ({{percentual_concluidas}}%) foram concluídas.
+    </p>
+    <p>
+      O setor com maior incidência foi <strong>{{setor_mais_frequente}}</strong>
+      ({{setor_mais_frequente_qtd}} ocorrências), o plantão
+      <strong>{{plantao_maior}}</strong> ({{plantao_maior_qtd}} ocorrências)
+      foi o mais afetado, e o tipo de erro mais frequente foi
+      <strong>{{tipo_mais_frequente}}</strong> ({{tipo_mais_frequente_qtd}} ocorrências).
+    </p>
+  </div>
+
+  <!-- KPIs principais -->
+  <div class="kpis">
+    <div class="card">
+      <div class="label">Total de Ocorrências</div>
+      <div class="valor">{{total}}</div>
+    </div>
+    <div class="card">
+      <div class="label">Ativas / Concluídas</div>
+      <div class="valor" style="font-size: 12pt;">
+        {{ativas}} <span class="sub">/</span> {{concluidas}}
+      </div>
+      <div class="sub">{{percentual_ativas}}% / {{percentual_concluidas}}%</div>
+    </div>
+    <div class="card">
+      <div class="label">Setor Mais Afetado</div>
+      <div class="valor" style="font-size: 11pt;">{{setor_mais_frequente}}</div>
+      <div class="sub">{{setor_mais_frequente_qtd}} ocorrências</div>
+    </div>
+    <div class="card">
+      <div class="label">Plantão Mais Afetado</div>
+      <div class="valor" style="font-size: 11pt;">{{plantao_maior}}</div>
+      <div class="sub">{{plantao_maior_qtd}} ocorrências</div>
+    </div>
+    <div class="card">
+      <div class="label">Tipo de Erro Predominante</div>
+      <div class="valor" style="font-size: 11pt;">{{tipo_mais_frequente}}</div>
+      <div class="sub">{{tipo_mais_frequente_qtd}} ocorrências</div>
+    </div>
+    <div class="card">
+      <div class="label">Medicamento Mais Envolvido</div>
+      <div class="valor" style="font-size: 10pt;">{{medicamento_mais_envolvido}}</div>
+      <div class="sub">{{medicamento_mais_envolvido_qtd}} ocorrências</div>
+    </div>
+  </div>
+
+  <!-- Top Tipos de Erro -->
+  <div class="secao">
+    <h2>Top 10 — Tipos de Erro</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Tipo de Erro</th><th>Ocorrências</th><th>Distribuição</th></tr>
+      </thead>
+      <tbody>
+        {{#topTiposErro}}
+        <tr>
+          <td>{{item_index}}</td>
+          <td>{{nome}}</td>
+          <td>{{valor}}</td>
+          <td>
+            <div class="barra-container">
+              <div class="barra" style="--barra-width: {{percentual}}%;">{{valor}}</div>
+            </div>
+          </td>
+        </tr>
+        {{/topTiposErro}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Top Setores -->
+  <div class="secao">
+    <h2>Top 10 — Setores</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Setor</th><th>Ocorrências</th><th>Distribuição</th></tr>
+      </thead>
+      <tbody>
+        {{#topSetores}}
+        <tr>
+          <td>{{item_index}}</td>
+          <td>{{nome}}</td>
+          <td>{{valor}}</td>
+          <td>
+            <div class="barra-container">
+              <div class="barra" style="--barra-width: {{percentual}}%;">{{valor}}</div>
+            </div>
+          </td>
+        </tr>
+        {{/topSetores}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Top Medicamentos -->
+  <div class="secao">
+    <h2>Top 10 — Medicamentos Envolvidos</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Medicamento</th><th>Ocorrências</th></tr>
+      </thead>
+      <tbody>
+        {{#topMedicamentos}}
+        <tr>
+          <td>{{item_index}}</td>
+          <td>{{nome}}</td>
+          <td>{{valor}}</td>
+        </tr>
+        {{/topMedicamentos}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Assinatura -->
+  <div class="assinatura">
+    <div class="assinatura-linha"></div>
+    <div class="assinatura-texto">Coordenadora de Assistência Farmacêutica</div>
+    <div class="assinatura-texto">Ana Carla Yamamoto</div>
+  </div>
+
+  <div class="footer">
+    <div>Emitido em: {{data_emissao_br}}</div>
+    <div>DispensaAudit v0.1.0</div>
+  </div>
+
+</body>
+</html>
