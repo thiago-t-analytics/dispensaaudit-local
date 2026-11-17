@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DispensaAudit — Gestão de Não Conformidades</title>
+  <!-- A folha legada mantém a estrutura; tokens e camadas novas sobrescrevem apenas o visual. -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Pular para o conteúdo</a>
+
+  <!-- Navegação lateral com controles de botão para suporte completo a teclado. -->
+  <nav class="sidebar" id="appSidebar" aria-label="Navegação principal">
+    <div class="sidebar-header">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3 19 6v5c0 4.7-2.8 8-7 10-4.2-2-7-5.3-7-10V6l7-3Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.6"/>
+          <path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/>
+        </svg>
+      </span>
+      <div class="brand-copy">
+        <h1>DispensaAudit</h1>
+        <small>Não Conformidades na Dispensação</small>
+      </div>
+    </div>
+
+    <p class="sidebar-section-label">Workspace</p>
+    <button class="nav-item active" type="button" data-page="dashboard"
+      aria-current="page" aria-controls="page-dashboard">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.2"/><rect x="13.5" y="11.5" width="7" height="9" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/></svg>
+      </span><span>Dashboard</span>
+    </button>
+    <button class="nav-item" type="button" data-page="ocorrencias"
+      aria-controls="page-ocorrencias">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M14 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V9Z"/><path d="M14 3.5V9h5.5M8 13h8M8 16.5h8"/></svg>
+      </span><span>Ocorrências</span>
+    </button>
+    <button class="nav-item" type="button" data-page="configuracoes"
+      aria-controls="page-configuracoes">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3 .9v.2a1.8 1.8 0 0 1-3.6 0v-.2a1.8 1.8 0 0 0-3-.9l-.1.1a1.8 1.8 0 1 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-.9-3h-.2a1.8 1.8 0 0 1 0-3.6h.2a1.8 1.8 0 0 0 .9-3l-.1-.1a1.8 1.8 0 1 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 3-.9v-.2a1.8 1.8 0 0 1 3.6 0v.2a1.8 1.8 0 0 0 3 .9l.1-.1a1.8 1.8 0 1 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 .9 3h.2a1.8 1.8 0 0 1 0 3.6h-.2a1.8 1.8 0 0 0-.9 3Z"/></svg>
+      </span><span>Configurações</span>
+    </button>
+    <button class="nav-item" type="button" data-page="logs"
+      aria-controls="page-logs">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M7 4.5h13M7 9.5h13M7 14.5h13M7 19.5h13"/><path d="M3.5 4.5h.01M3.5 9.5h.01M3.5 14.5h.01M3.5 19.5h.01"/></svg>
+      </span><span>Logs de auditoria</span>
+    </button>
+
+    <div class="sidebar-footer">
+      <div>H-Supply Vision</div>
+      <span class="version">v0.1.0 · Ambiente local</span>
+    </div>
+  </nav>
+  <button class="sidebar-backdrop" id="sidebarBackdrop" type="button"
+    aria-label="Fechar menu de navegação"></button>
+
+  <!-- O conteúdo principal é o destino do link de salto e recebe o estado de carregamento. -->
+  <main class="main-content" id="mainContent" tabindex="-1">
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button"
+          aria-label="Abrir menu de navegação" aria-controls="appSidebar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="header-title-group">
+          <nav class="breadcrumbs" aria-label="Caminho da página">
+            <ol>
+              <li>DispensaAudit</li>
+              <li id="breadcrumbCurrent" aria-current="page">Dashboard</li>
+            </ol>
+          </nav>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-status" role="status" aria-label="Aplicação local disponível">
+          <span class="status-indicator" aria-hidden="true"></span>
+          <span>Ambiente local</span>
+        </div>
+        <button class="header-icon-button" id="btnOpenLogs" type="button"
+          aria-label="Abrir atividade e logs de auditoria" title="Logs de auditoria">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/>
+          </svg>
+        </button>
+        <div class="user-info" aria-label="Sessão local ativa">
+          <div class="avatar" id="userAvatar">S</div>
+          <span id="userName">Sistema local</span>
+        </div>
+        <!--
+        Se a seleção manual de usuário voltar a ser necessária, descomente o botão
+        e o modal mais abaixo. A identidade padrão da instalação local é "Sistema".
+        <button class="user-selector" id="btnOpenUserModal" type="button"
+          aria-label="Alterar usuário selecionado" aria-haspopup="dialog" aria-controls="userModalOverlay">
+          <div class="avatar" id="userAvatar">?</div>
+          <span id="userName">—</span>
+        </button>
+        -->
+        <span class="date-time" id="currentDateTime"></span>
+      </div>
+    </header>
+
+    <!-- Esqueleto finito de carregamento; aria-live anuncia a troca de conteúdo. -->
+    <div class="page-skeleton" id="pageSkeleton" role="status" aria-live="polite"
+      aria-label="Carregando conteúdo" hidden>
+      <div class="skeleton-kpis" aria-hidden="true">
+        <div class="skeleton-block"></div>
+        <div class="skeleton-block"></div>
+        <div class="skeleton-block"></div>
+        <div class="skeleton-block"></div>
+      </div>
+      <div class="skeleton-block large" aria-hidden="true"></div>
+    </div>
+
+    <!-- ── PAGE: DASHBOARD ────────────────────────────────── -->
+    <div class="page active" id="page-dashboard">
+      <!-- Filtros -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>Período</label>
+          <select id="filterPeriodo">
+            <option value="hoje">Hoje</option>
+            <option value="7dias">Últimos 7 dias</option>
+            <option value="30dias" selected>Últimos 30 dias</option>
+            <option value="mes">Mês atual</option>
+            <option value="todos">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Status</label>
+          <select id="filterStatus">
+            <option value="todas" selected>Todas</option>
+            <option value="Ativa">Ativas</option>
+            <option value="Concluida">Concluídas</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Plantão</label>
+          <select id="filterPlantao">
+            <option value="">Todos</option>
+            <option value="Diurno">Diurno</option>
+            <option value="Noturno">Noturno</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Setor</label>
+          <select id="filterSetor">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Tipo de Erro</label>
+          <select id="filterTipoErro">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Farmacêutico</label>
+          <select id="filterFarmaceutico">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="Dashboard.carregar()">
+            🔄 Atualizar
+          </button>
+        </div>
+        <div class="filter-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-pdf" onclick="Dashboard.gerarPdfGerencial()">
+            📄 PDF Gerencial
+          </button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid" id="kpiGrid"></div>
+
+      <!-- Gráficos -->
+      <div class="charts-grid" id="chartsGrid"></div>
+
+      <!-- Tabela -->
+      <div class="table-wrapper">
+        <div class="table-header">
+          <h3>Ocorrências</h3>
+          <input type="text" id="tableSearch" placeholder="Buscar..." oninput="Dashboard.filtrarTabela()">
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Prontuário</th>
+                <th>Medicamento</th>
+                <th>Tipo de Erro</th>
+                <th>Farmacêutico</th>
+                <th>Setor</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <span id="tableInfo">—</span>
+          <div class="pagination" id="tablePagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: OCORRÊNCIAS ──────────────────────────────── -->
+    <div class="page" id="page-ocorrencias">
+      <div class="form-card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3>Registrar Nova Ocorrência</h3>
+          <div style="text-align: right;">
+            <span style="font-size: 13px; color: #6B7280;">Próximo ID:</span>
+            <strong id="proximoIdOcorrencia" style="font-size: 18px; color: #3A506B;">
+              Calculando...
+            </strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Identificação -->
+        <div class="form-card">
+          <h4>Identificação</h4>
+          <div class="form-group">
+            <label>Data da Ocorrência <span class="required">*</span></label>
+            <input type="date" id="ocDataOcorrencia">
+          </div>
+          <div class="form-group">
+            <label>Prontuário <span class="required">*</span></label>
+            <input type="text" id="ocProntuario" placeholder="Ex: 123456789">
+          </div>
+          <div class="form-group">
+            <label>Número da Prescrição <span class="required">*</span></label>
+            <input type="text" id="ocNumeroPrescricao" placeholder="Ex: 123456789">
+          </div>
+        </div>
+
+        <!-- Medicamento -->
+        <div class="form-card">
+          <h4>Medicamento e Erro</h4>
+          <div class="form-group">
+            <label>Medicamento <span class="required">*</span></label>
+            <select id="ocMedicamento">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Erro <span class="required">*</span></label>
+            <select id="ocTipoErro">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Setor <span class="required">*</span></label>
+            <select id="ocSetor">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quantidades -->
+        <div class="form-card">
+          <h4>Quantidades</h4>
+          <div class="form-group">
+            <label>Quantidade Prescrita <span class="required">*</span></label>
+            <input type="number" id="ocQuantidadePrescrita" step="0.01" min="0" oninput="Ocorrencias.calcularDiferenca()">
+          </div>
+          <div class="form-group">
+            <label>Quantidade Dispensada</label>
+            <input type="number" id="ocQuantidadeDispensada" step="0.01" min="0" oninput="Ocorrencias.calcularDiferenca()">
+          </div>
+          <div class="form-group">
+            <label>Diferença (automático)</label>
+            <div class="calc-display" id="ocDiferencaDisplay">0</div>
+          </div>
+        </div>
+
+        <!-- Horários -->
+        <div class="form-card">
+          <h4>Horários</h4>
+          <div class="form-group">
+            <label>Hora da Prescrição</label>
+            <input type="time" id="ocHoraPrescricao" oninput="Ocorrencias.calcularHorario()">
+          </div>
+          <div class="form-group">
+            <label>Hora da Dispensação</label>
+            <input type="time" id="ocHoraDispensacao" oninput="Ocorrencias.calcularHorario()">
+          </div>
+          <div class="form-group">
+            <label>Classificação (automático)</label>
+            <div class="calc-display" id="ocClassificacaoDisplay">Aguardando horários</div>
+          </div>
+        </div>
+
+        <!-- Equipe -->
+        <div class="form-card">
+          <h4>Equipe</h4>
+          <div class="form-group">
+            <label>Plantão <span class="required">*</span></label>
+            <select id="ocPlantao" onchange="Ocorrencias.carregarFarmaceuticos()">
+              <option value="">Selecione...</option>
+              <option value="Diurno">Diurno</option>
+              <option value="Noturno">Noturno</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Farmacêutico <span class="required">*</span></label>
+            <select id="ocFarmaceutico" onchange="Ocorrencias.carregarAssistentes()">
+              <option value="">Selecione o plantão primeiro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="checkbox-inline">
+              <input type="checkbox" id="ocErroFarmaceutico" onchange="Ocorrencias.toggleResponsavelErro()">
+              <label for="ocErroFarmaceutico">Erro do farmacêutico</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Assistente</label>
+            <select id="ocAssistente">
+              <option value="">Selecione o farmacêutico primeiro</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Observações -->
+        <div class="form-card">
+          <h4>Observações</h4>
+          <div class="form-group">
+            <label>Observações (opcional)</label>
+            <textarea id="ocObservacoes" rows="4" placeholder="Informações adicionais..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="Ocorrencias.limpar()">Limpar</button>
+        <button class="btn btn-primary" onclick="Ocorrencias.salvar()">💾 Salvar Ocorrência</button>
+      </div>
+    </div>
+
+    <!-- ── PAGE: CONFIGURAÇÕES ────────────────────────────── -->
+    <div class="page" id="page-configuracoes">
+      <div class="config-tabs">
+        <button class="tab active" data-tab="medicamentos" onclick="Cruds.mudarTab('medicamentos')">Medicamentos</button>
+        <button class="tab" data-tab="tiposErro" onclick="Cruds.mudarTab('tiposErro')">Tipos de Erro</button>
+        <button class="tab" data-tab="setores" onclick="Cruds.mudarTab('setores')">Setores</button>
+        <button class="tab" data-tab="farmaceuticos" onclick="Cruds.mudarTab('farmaceuticos')">Farmacêuticos</button>
+        <button class="tab" data-tab="assistentes" onclick="Cruds.mudarTab('assistentes')">Assistentes</button>
+      </div>
+      <div id="configContent"></div>
+    </div>
+
+    <!-- ── PAGE: LOGS ─────────────────────────────────────── -->
+    <div class="page" id="page-logs">
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>Ação</label>
+          <select id="logFilterAcao">
+            <option value="">Todas</option>
+            <option value="Cadastro">Cadastro</option>
+            <option value="Edição">Edição</option>
+            <option value="Exclusão">Exclusão</option>
+            <option value="Exclusão (lógica)">Exclusão (lógica)</option>
+            <option value="Atualização de Status">Atualização de Status</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Tabela</label>
+          <select id="logFilterTabela">
+            <option value="">Todas</option>
+            <option value="ocorrencias">Ocorrências</option>
+            <option value="medicamentos">Medicamentos</option>
+            <option value="tipos_erro">Tipos de Erro</option>
+            <option value="setores">Setores</option>
+            <option value="farmaceuticos">Farmacêuticos</option>
+            <option value="assistentes">Assistentes</option>
+            <option value="usuarios">Usuários</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="Logs.carregar()">🔍 Filtrar</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <div class="table-header">
+          <h3>Registro de Auditoria</h3>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Usuário</th>
+                <th>Ação</th>
+                <th>Tabela</th>
+                <th>Registro</th>
+              </tr>
+            </thead>
+            <tbody id="logTableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <span id="logInfo">—</span>
+          <div class="pagination" id="logPagination"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MODAL GENÉRICO (CRUD, confirmações, detalhes)
+       ═══════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h3 id="modalTitle">Título</h3>
+        <button class="modal-close" onclick="UI.fecharModal()">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!--
+  Seleção manual desativada para a instalação local. O formulário é preservado
+  para possível reativação; as chamadas seguem identificadas como "Sistema".
+  <div class="modal-overlay" id="userModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="userModalTitle">Bem-vindo(a)!</h3>
+      </div>
+      <div style="padding: 0 24px 24px;">
+        <p style="margin-bottom: 16px; color: #6B7280;">
+          Para prosseguir, selecione seu nome. Isso garante que todas
+          as suas ações sejam registradas na auditoria.
+        </p>
+        <div class="form-group">
+          <label>Seu Nome <span class="required">*</span></label>
+          <select id="userSelect">
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+        <div class="form-actions" style="margin-top: 16px;">
+          <button class="btn btn-primary" id="btnConfirmUser" onclick="App.confirmarUsuario()">
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  -->
+
+  <!-- ═══════════════════════════════════════════════════════
+       LOADING OVERLAY
+       ═══════════════════════════════════════════════════════ -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p id="loadingMessage">Carregando...</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TOAST CONTAINER
+       ═══════════════════════════════════════════════════════ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS (ordem importa!)
+       ═══════════════════════════════════════════════════════ -->
+  <script src="/js/state.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/ocorrencias.js"></script>
+  <script src="/js/cruds.js"></script>
+  <script src="/js/logs.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

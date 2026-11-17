@@ -1,0 +1,254 @@
+/*
+ * DESIGN SYSTEM — COMPONENTES
+ * O que faz: aplica os tokens aos componentes que já existem no HTML e nos
+ * templates gerados pelo JavaScript, mantendo classes e IDs atuais.
+ * Por que: permite evoluir o visual em etapas sem alterar fluxos de negócio.
+ * Teste visual: abra Dashboard, Ocorrências e Configurações; verifique botões,
+ * cartões, campos, tabelas, abas e modais com o mesmo padrão visual.
+ */
+.kpi-card,
+.filters-bar,
+.form-card,
+.chart-card,
+.table-wrapper,
+.config-tabs,
+.modal {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-default);
+  box-shadow: var(--shadow-subtle);
+}
+
+:where(.kpi-card, .form-card, .chart-card, .table-wrapper) {
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.kpi-card:hover,
+.form-card:hover,
+.chart-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.btn {
+  min-height: 2.5rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    box-shadow var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: var(--text-on-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--gradient-primary);
+  box-shadow: var(--shadow-sm);
+  filter: brightness(1.05);
+}
+
+.btn-secondary {
+  background: var(--color-info);
+  color: #ffffff;
+}
+
+.btn-outline {
+  border-color: var(--border-strong);
+  background: var(--surface-default);
+  color: var(--text-secondary);
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+}
+
+.btn-danger {
+  background: var(--color-error);
+  color: #ffffff;
+}
+
+.btn-pdf {
+  border-color: var(--color-error-soft);
+  background: var(--color-error-soft);
+  color: var(--color-error);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+}
+
+.btn-sm {
+  min-height: 2rem;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+.form-group input:not([type="checkbox"]):not([type="radio"]),
+.form-group select,
+.form-group textarea,
+.filter-group select,
+.filter-group input,
+.table-header input {
+  min-height: 2.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-default);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-group input::placeholder,
+.filter-group input::placeholder,
+.table-header input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible,
+.filter-group select:focus-visible,
+.filter-group input:focus-visible,
+.table-header input:focus-visible {
+  border-color: var(--color-primary-600);
+  box-shadow: var(--shadow-focus);
+}
+
+.form-group label,
+.filter-group label {
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.form-card h4,
+.chart-card h4 {
+  color: var(--text-secondary);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.calc-display {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+}
+
+.table-wrapper {
+  overflow: hidden;
+}
+
+table th {
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+table td {
+  color: var(--text-secondary);
+}
+
+table tbody tr:hover td {
+  background: var(--surface-canvas);
+}
+
+.status-badge {
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-semibold);
+}
+
+.status-badge.Ativa {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.status-badge.Concluida {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.status-badge.Excluida {
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.config-tabs {
+  box-shadow: var(--shadow-subtle);
+}
+
+.tab {
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.tab:hover {
+  background: var(--surface-sunken);
+}
+
+.tab.active {
+  background: var(--color-primary-700);
+  color: #ffffff;
+}
+
+.modal-overlay {
+  background: rgb(26 36 32 / 48%);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  border-color: var(--border-default);
+}
+
+.modal-close {
+  border-radius: var(--radius-sm);
+}
+
+.modal-close:hover {
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+}
+
+.toast {
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Os tokens dark já mudam superfícies e texto; estes ajustes cobrem o legado. */
+[data-theme="dark"] :where(.kpi-card, .filters-bar, .form-card, .chart-card,
+  .table-wrapper, .config-tabs, .modal) {
+  background: var(--surface-default);
+}
+
+[data-theme="dark"] .btn-outline {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] table th,
+[data-theme="dark"] table tbody tr:hover td,
+[data-theme="dark"] .calc-display {
+  background: var(--surface-sunken);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active:not(:disabled) {
+    transform: none;
+  }
+}

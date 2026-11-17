@@ -1,0 +1,169 @@
+/* 
+ * DESIGN SYSTEM — TOKENS
+ * O que faz: centraliza as decisões visuais em propriedades reutilizáveis.
+ * Por que: uma paleta e uma escala únicas evitam diferenças entre telas e
+ * facilitam ajustes futuros sem procurar valores espalhados pelo CSS.
+ * Teste visual: altere --color-primary e recarregue para ver a cor de ação
+ * refletida nos componentes que consomem os tokens.
+ */
+:root {
+  color-scheme: light;
+
+  /* Azul-petróleo e verde-sálvia: identidade de saúde com calor humano. */
+  --color-primary-700: #0f4c5c;
+  --color-primary-600: #1a6b7f;
+  --color-primary-500: #267f91;
+  --color-primary-100: #e5f1f2;
+  --color-secondary-700: #3e7464;
+  --color-secondary-600: #568b78;
+  --color-secondary-500: #6ba292;
+  --color-secondary-100: #eaf3ef;
+
+  /* Dez neutros quentes, do quase branco ao carvão. */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafaf7;
+  --color-neutral-100: #f3f3ee;
+  --color-neutral-200: #e7e7e0;
+  --color-neutral-300: #d3d4cc;
+  --color-neutral-400: #a7aaa2;
+  --color-neutral-500: #777c75;
+  --color-neutral-600: #5b615b;
+  --color-neutral-700: #424943;
+  --color-neutral-800: #2b332f;
+  --color-neutral-900: #1a2420;
+
+  /* Tons semânticos escuros mantêm boa leitura sobre superfícies claras. */
+  --color-success: #287a55;
+  --color-success-soft: #e8f4ed;
+  --color-warning: #895b08;
+  --color-warning-soft: #fbf1d9;
+  --color-error: #b42332;
+  --color-error-soft: #fbeaec;
+  --color-info: #216a85;
+  --color-info-soft: #e8f2f6;
+
+  --surface-canvas: var(--color-neutral-50);
+  --surface-default: var(--color-neutral-0);
+  --surface-raised: #ffffff;
+  --surface-sunken: var(--color-neutral-100);
+  --surface-inverse: var(--color-neutral-900);
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-600);
+  --text-muted: var(--color-neutral-500);
+  --text-on-primary: #ffffff;
+  --border-default: var(--color-neutral-200);
+  --border-strong: var(--color-neutral-300);
+
+  /* Compatibilidade temporária com os nomes usados por style.css. */
+  --primary: var(--color-primary-700);
+  --primary-light: var(--color-primary-600);
+  --secondary: var(--color-secondary-500);
+  --success: var(--color-success);
+  --success-light: var(--color-success-soft);
+  --info: var(--color-info);
+  --warning: #b77912;
+  --warning-light: var(--color-warning-soft);
+  --danger: var(--color-error);
+  --danger-light: var(--color-error-soft);
+  --gray-50: var(--color-neutral-50);
+  --gray-100: var(--color-neutral-100);
+  --gray-200: var(--color-neutral-200);
+  --gray-300: var(--color-neutral-300);
+  --gray-500: var(--color-neutral-500);
+  --gray-600: var(--color-neutral-600);
+  --gray-700: var(--color-neutral-700);
+  --gray-900: var(--color-neutral-900);
+  --text: var(--text-primary);
+
+  /* Família do sistema: rápida, legível e sem dependência de fonte externa. */
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* Escala tipográfica de sete tamanhos para hierarquia consistente. */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.04em;
+
+  /* Grade baseada em 4px; os valores pares seguem o grid de 8 pontos. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.125rem;
+  --radius-full: 9999px;
+  --radius: var(--radius-lg);
+
+  /* Elevações discretas, com foco claramente identificável. */
+  --shadow-subtle: 0 1px 2px rgb(26 36 32 / 4%);
+  --shadow-sm: 0 1px 3px rgb(26 36 32 / 7%), 0 1px 2px rgb(26 36 32 / 4%);
+  --shadow-md: 0 2px 6px rgb(26 36 32 / 8%), 0 1px 2px rgb(26 36 32 / 4%);
+  --shadow-lg: 0 2px 8px rgb(26 36 32 / 10%), 0 1px 3px rgb(26 36 32 / 5%);
+  --shadow-focus: 0 0 0 3px rgb(26 107 127 / 24%);
+  --shadow: var(--shadow-sm);
+  --shadow-md-legacy: var(--shadow-md);
+  --shadow-lg-legacy: var(--shadow-lg);
+
+  --transition-fast: 140ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 240ms ease;
+  --transition: all var(--transition-normal);
+  --gradient-primary: linear-gradient(145deg, #1a6b7f 0%, #0f4c5c 100%);
+  --gradient-surface: linear-gradient(160deg, #ffffff 0%, #fafaf7 100%);
+  --elevation-hover: translateY(-2px);
+  --content-max-width: 1440px;
+}
+
+/* Ative com data-theme="dark" no elemento raiz quando o seletor de tema existir. */
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-canvas: #151d1a;
+  --surface-default: #1d2723;
+  --surface-raised: #24302b;
+  --surface-sunken: #19221e;
+  --surface-inverse: #f3f3ee;
+  --text-primary: #f3f5f1;
+  --text-secondary: #c3cbc4;
+  --text-muted: #a0aaa2;
+  --text-on-primary: #ffffff;
+  --border-default: #35423b;
+  --border-strong: #48564e;
+  --color-success-soft: #203d2f;
+  --color-warning-soft: #40351e;
+  --color-error-soft: #44272b;
+  --color-info-soft: #203744;
+  --gray-50: #19221e;
+  --gray-100: #24302b;
+  --gray-200: #35423b;
+  --gray-300: #48564e;
+  --gray-500: #a0aaa2;
+  --gray-600: #c3cbc4;
+  --gray-700: #dce2dc;
+  --gray-900: #f3f5f1;
+  --text: var(--text-primary);
+}

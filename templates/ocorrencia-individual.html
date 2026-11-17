@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* ============================================================
+       Estilo do PDF — este CSS é aplicado APENAS no PDF gerado,
+       não no site. É um "CSS de impressão".
+       ============================================================ */
+    @page {
+      size: A4;
+      margin: 1.5cm 1.2cm;
+    }
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      font-size: 10pt;
+      color: #2E2E2E;
+      line-height: 1.5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #3A506B;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 18pt;
+      color: #3A506B;
+      margin: 0;
+    }
+    .header .codigo {
+      font-size: 14pt;
+      color: #6B7280;
+      font-weight: bold;
+    }
+    .secao {
+      margin-bottom: 16px;
+    }
+    .secao h2 {
+      font-size: 11pt;
+      color: #3A506B;
+      background: #F1F5F9;
+      padding: 6px 10px;
+      margin: 0 0 8px 0;
+      border-left: 3px solid #FFC107;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+    table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #E2E8F0;
+      vertical-align: top;
+    }
+    table td.rotulo {
+      font-weight: bold;
+      color: #475569;
+      width: 30%;
+      background: #FAFBFC;
+    }
+    .status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 9pt;
+      font-weight: bold;
+    }
+    .status.Ativa { background: #E8F5E9; color: #2E7D32; }
+    .status.Concluida { background: #FFF3E0; color: #E65100; }
+    .status.Excluida { background: #E2E5E7; color: #6B7280; }
+    .atrasada { color: #C62828; font-weight: bold; }
+    .no-horario { color: #2E7D32; font-weight: bold; }
+    .antecipada { color: #E65100; font-weight: bold; }
+    .observacoes {
+      background: #FFF8E1;
+      border-left: 3px solid #FFC107;
+      padding: 10px 12px;
+      font-size: 9pt;
+      white-space: pre-wrap;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px solid #E2E8F0;
+      font-size: 8pt;
+      color: #6B7280;
+      display: flex;
+      justify-content: space-between;
+    }
+    .assinatura {
+      margin-top: 60px;
+      text-align: center;
+    }
+    .assinatura-linha {
+      width: 300px;
+      border-top: 1px solid #2E2E2E;
+      margin: 0 auto;
+    }
+    .assinatura-texto {
+      margin-top: 5px;
+      font-size: 9pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CABEÇALHO ─────────────────────────────────────────── -->
+  <div class="header">
+    <div>
+      <h1>Relatório de Ocorrência</h1>
+      <div style="font-size: 9pt; color: #6B7280;">
+        Não Conformidade na Dispensação de Medicamentos
+      </div>
+    </div>
+    <div class="codigo">{{codigo}}</div>
+  </div>
+
+  <!-- ── IDENTIFICAÇÃO ─────────────────────────────────────── -->
+  <div class="secao">
+    <h2>Identificação</h2>
+    <table>
+      <tr>
+        <td class="rotulo">Data da Ocorrência</td>
+        <td>{{data_ocorrencia_br}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Prontuário</td>
+        <td>{{prontuario}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Número da Prescrição</td>
+        <td>{{numero_prescricao}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Setor</td>
+        <td>{{setor_nome}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Plantão</td>
+        <td>{{plantao}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Status</td>
+        <td><span class="status {{status}}">{{status}}</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── MEDICAMENTO E ERRO ────────────────────────────────── -->
+  <div class="secao">
+    <h2>Medicamento e Tipo de Erro</h2>
+    <table>
+      <tr>
+        <td class="rotulo">Medicamento</td>
+        <td>{{medicamento_nome}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Tipo de Erro</td>
+        <td>{{tipo_erro_descricao}} ({{tipo_erro_categoria}})</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── QUANTIDADES ───────────────────────────────────────── -->
+  <div class="secao">
+    <h2>Quantidades</h2>
+    <table>
+      <tr>
+        <td class="rotulo">Quantidade Prescrita</td>
+        <td>{{quantidade_prescrita}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Quantidade Dispensada</td>
+        <td>{{quantidade_dispensada}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Diferença</td>
+        <td>{{diferenca_quantidade}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── HORÁRIOS ──────────────────────────────────────────── -->
+  <div class="secao">
+    <h2>Horários</h2>
+    <table>
+      <tr>
+        <td class="rotulo">Hora da Prescrição</td>
+        <td>{{hora_prescricao}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Hora da Dispensação</td>
+        <td>{{hora_dispensacao}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Diferença (min)</td>
+        <td>{{diferenca_minutos}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Classificação</td>
+        <td>
+          <span class="{{classificacao_horario_class}}">
+            {{classificacao_horario}}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── EQUIPE ────────────────────────────────────────────── -->
+  <div class="secao">
+    <h2>Equipe Envolvida</h2>
+    <table>
+      <tr>
+        <td class="rotulo">Farmacêutico</td>
+        <td>{{farmaceutico_nome}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Assistente</td>
+        <td>{{assistente_nome}}</td>
+      </tr>
+      <tr>
+        <td class="rotulo">Responsável pelo Erro</td>
+        <td>{{responsavel_erro}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── OBSERVAÇÕES ───────────────────────────────────────── -->
+  {{#if observacoes}}
+  <div class="secao">
+    <h2>Observações</h2>
+    <div class="observacoes">{{observacoes}}</div>
+  </div>
+  {{/if}}
+
+  <!-- ── ASSINATURA ────────────────────────────────────────── -->
+  <div class="assinatura">
+    <div class="assinatura-linha"></div>
+    <div class="assinatura-texto">Coordenadora de Assistência Farmacêutica</div>
+    <div class="assinatura-texto">Ana Carla Yamamoto</div>
+  </div>
+
+  <!-- ── RODAPÉ ────────────────────────────────────────────── -->
+  <div class="footer">
+    <div>Emitido em: {{data_emissao_br}}</div>
+    <div>Usuário: {{usuario_cadastro}}</div>
+    <div>DispensaAudit v0.1.0</div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+    "output": {
+        "filePath": "repomix-handoff.xml",
+        "style": "xml",
+        "compress": false,
+        "fileSummary": true,
+        "directoryStructure": true
+    },
+    "ignore": {
+        "useGitignore": true,
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            "database/seed.sql",
+            "database/schema.sql",
+            "database/*.db",
+            "database/*.db-*",
+            "output/**",
+            "DispensaAudit.xlsx",
+            "package-lock.json",
+            "scripts/**",
+            "docs/00-guia-do-aluno.md",
+            "docs/00-guia-do-mentor.md",
+            "docs/01-requisitos.md",
+            "src/db/queries/**",
+            "src/db/connection.js",
+            "src/server.js",
+            "src/utils/**",
+            "src/routes/medicamentos.js",
+            "src/routes/tiposErro.js",
+            "src/routes/setores.js",
+            "src/routes/farmaceuticos.js",
+            "src/routes/assistentes.js",
+            "src/routes/usuarios.js",
+            "src/routes/logs.js",
+            "src/routes/pdf.js",
+            "src/routes/ocorrencias.js",
+            "src/routes/index.js",
+            "src/services/logs.js",
+            "src/services/kpis.js",
+            "src/services/graficos.js",
+            "src/services/ocorrencias.js",
+            "src/services/medicamentos.js",
+            "src/services/tiposErro.js",
+            "src/services/setores.js",
+            "src/services/farmaceuticos.js",
+            "src/services/assistentes.js",
+            "src/services/usuarios.js"
+        ]
+    }
+}

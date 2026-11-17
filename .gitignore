@@ -1,0 +1,36 @@
+# Dependências
+node_modules/
+
+# Banco de dados local (cada dev tem o seu)
+database/*.db
+database/*.db-journal
+database/*.db-wal
+database/*.db-shm
+
+# Variáveis de ambiente
+.env
+
+# PDFs gerados
+output/*.pdf
+output/*.html
+
+# Dados sensíveis — NUNCA subir para o GitHub
+DispensaAudit.xlsx
+database/seed.sql
+
+# Logs e temporários
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# VS Code (configurações pessoais)
+.vscode/settings.json
+.vscode/launch.json
+
+# Node
+dist/
+build/
+coverage/
