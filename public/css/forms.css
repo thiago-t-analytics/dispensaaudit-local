@@ -1,0 +1,85 @@
+/* DIA 10 ? ESTILOS DOS FORMUL?RIOS.
+ * BLOCO D10-B03: o CSS ? ativado ao descomentar o link correspondente em public/index.html.
+ * CONCEITO: organiza??o visual reutiliz?vel e progressiva.
+ * TESTE: depois de ativar o link, confira a p?gina em 375 px e desktop.
+ * REQUER: estrutura HTML do Dia 10. */
+/*
+ * O que faz: padroniza os formulários de Configurações e os controles de filtro.
+ * Por que existe: os cadastros compartilham um único modal e precisam de rótulos,
+ * campos e estados de foco coerentes com o design system.
+ * Como testar: abra Configurações, use Novo/Editar e percorra os campos com Tab.
+ */
+#modalBody {
+  padding: var(--space-6);
+}
+
+#modalBody .form-group {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+#modalBody label,
+#page-logs .filter-group label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+#modalBody input,
+#modalBody select,
+#modalBody textarea,
+#page-logs .filter-group input,
+#page-logs .filter-group select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-default);
+  color: var(--text-primary);
+  font: inherit;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+#modalBody input:focus-visible,
+#modalBody select:focus-visible,
+#modalBody textarea:focus-visible,
+#page-logs .filter-group input:focus-visible,
+#page-logs .filter-group select:focus-visible {
+  outline: none;
+  border-color: var(--color-primary-600);
+  box-shadow: var(--shadow-focus);
+}
+
+#modalBody .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+#modalBody .required {
+  color: var(--color-error-text);
+}
+
+.button-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+@media (max-width: 639px) {
+  #modalBody {
+    padding: var(--space-4);
+  }
+
+  #modalBody .form-actions > .btn {
+    flex: 1 1 100%;
+  }
+}
+/* CHECKPOINT: ao carregar D10-B03, este arquivo participa da camada visual prevista. */

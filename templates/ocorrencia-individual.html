@@ -1,50 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- DIA 14-B02: template carregado pelo serviço de PDF; estude os placeholders e o cabeçalho institucional. -->
 <head>
   <meta charset="UTF-8">
   <style>
-    /* ============================================================
-       Estilo do PDF — este CSS é aplicado APENAS no PDF gerado,
-       não no site. É um "CSS de impressão".
-       ============================================================ */
-    @page {
-      size: A4;
-      margin: 1.5cm 1.2cm;
-    }
+    /* Identidade de impressão local: tinta econômica, títulos claros e leitura A4. */
+    @page { size: A4; }
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Helvetica', 'Arial', sans-serif;
+      margin: 0;
+      color: #292524;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 10pt;
-      color: #2E2E2E;
-      line-height: 1.5;
+      line-height: 1.45;
     }
-    .header {
+    /* Mantém as três marcas proporcionais e alinhadas dentro da área útil A4. */
+    .logos-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #3A506B;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
       margin-bottom: 20px;
+      border-bottom: 1px solid #E5E7EB;
     }
-    .header h1 {
-      font-size: 18pt;
-      color: #3A506B;
+    .logos-header .logo {
+      max-height: 55px;
+      max-width: 140px;
+      object-fit: contain;
+    }
+    .logos-header .logo-funeas { max-height: 60px; }
+    .logos-header .logo-hriv { max-height: 55px; }
+    .logos-header .logo-parana { max-height: 50px; }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #0EA5E9;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-mark { width: 38px; height: 38px; flex: 0 0 auto; }
+    .brand-copy h1 {
       margin: 0;
+      color: #0369A1;
+      font-size: 17pt;
+      line-height: 1.2;
     }
-    .header .codigo {
-      font-size: 14pt;
-      color: #6B7280;
+    .brand-copy p {
+      margin: 3px 0 0;
+      color: #57534E;
+      font-size: 8pt;
+    }
+    .codigo {
+      color: #92400E;
+      font-size: 13pt;
       font-weight: bold;
+      text-align: right;
     }
-    .secao {
-      margin-bottom: 16px;
-    }
+    .secao { margin: 0 0 15px; break-inside: avoid; }
     .secao h2 {
-      font-size: 11pt;
-      color: #3A506B;
-      background: #F1F5F9;
-      padding: 6px 10px;
-      margin: 0 0 8px 0;
-      border-left: 3px solid #FFC107;
+      margin: 0 0 7px;
+      padding: 6px 9px;
+      border-left: 3px solid #F59E0B;
+      background: #E0F2FE;
+      color: #075985;
+      font-size: 10.5pt;
     }
     table {
       width: 100%;
@@ -52,205 +78,152 @@
       font-size: 9pt;
     }
     table td {
-      padding: 6px 8px;
-      border-bottom: 1px solid #E2E8F0;
+      padding: 5px 8px;
+      border-bottom: 1px solid #E7E5E4;
       vertical-align: top;
+      overflow-wrap: anywhere;
     }
     table td.rotulo {
-      font-weight: bold;
-      color: #475569;
       width: 30%;
-      background: #FAFBFC;
+      background: #FAFAF9;
+      color: #57534E;
+      font-weight: bold;
     }
     .status {
       display: inline-block;
-      padding: 3px 10px;
-      border-radius: 12px;
-      font-size: 9pt;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 8pt;
       font-weight: bold;
     }
-    .status.Ativa { background: #E8F5E9; color: #2E7D32; }
-    .status.Concluida { background: #FFF3E0; color: #E65100; }
-    .status.Excluida { background: #E2E5E7; color: #6B7280; }
-    .atrasada { color: #C62828; font-weight: bold; }
-    .no-horario { color: #2E7D32; font-weight: bold; }
-    .antecipada { color: #E65100; font-weight: bold; }
+    .status.Ativa { background: #D1FAE5; color: #047857; }
+    .status.Concluida { background: #FEF3C7; color: #92400E; }
+    .status.Excluida { background: #E7E5E4; color: #57534E; }
+    .atrasada { color: #EF4444; font-weight: bold; }
+    .no-horario { color: #10B981; font-weight: bold; }
+    .antecipada { color: #F59E0B; font-weight: bold; }
     .observacoes {
-      background: #FFF8E1;
-      border-left: 3px solid #FFC107;
-      padding: 10px 12px;
+      padding: 9px 11px;
+      border-left: 3px solid #F59E0B;
+      background: #FFFBEB;
+      color: #44403C;
       font-size: 9pt;
       white-space: pre-wrap;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 10px;
-      border-top: 1px solid #E2E8F0;
-      font-size: 8pt;
-      color: #6B7280;
-      display: flex;
-      justify-content: space-between;
+      overflow-wrap: anywhere;
     }
     .assinatura {
-      margin-top: 60px;
+      margin: 32px 0 22px;
       text-align: center;
+      break-inside: avoid;
     }
     .assinatura-linha {
-      width: 300px;
-      border-top: 1px solid #2E2E2E;
+      width: 260px;
       margin: 0 auto;
+      border-top: 1px solid #57534E;
     }
-    .assinatura-texto {
-      margin-top: 5px;
-      font-size: 9pt;
+    .assinatura-texto { margin-top: 4px; font-size: 8.5pt; }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid #D6D3D1;
+      color: #78716C;
+      font-size: 7.5pt;
     }
   </style>
 </head>
 <body>
-
-  <!-- ── CABEÇALHO ─────────────────────────────────────────── -->
-  <div class="header">
-    <div>
-      <h1>Relatório de Ocorrência</h1>
-      <div style="font-size: 9pt; color: #6B7280;">
-        Não Conformidade na Dispensação de Medicamentos
+  <!-- Logos opcionais; o template as omite se algum PNG estiver indisponível. -->
+  <div class="logos-header">
+    {{#if logo_funeas}}<img src="{{logo_funeas}}" alt="FUNEAS" class="logo logo-funeas">{{/if}}
+    {{#if logo_hriv}}<img src="{{logo_hriv}}" alt="HRIV" class="logo logo-hriv">{{/if}}
+    {{#if logo_parana}}<img src="{{logo_parana}}" alt="Paraná" class="logo logo-parana">{{/if}}
+  </div>
+  <header class="header">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" role="img" aria-label="DispensaAudit">
+        <circle cx="20" cy="20" r="19" fill="#0369A1"/>
+        <text x="20" y="25" fill="#FFFFFF" font-family="Arial, sans-serif"
+          font-size="12" font-weight="700" text-anchor="middle">DA</text>
+      </svg>
+      <div class="brand-copy">
+        <h1>Relatório de Ocorrência</h1>
+        <p>Não conformidade na dispensação de medicamentos</p>
       </div>
     </div>
     <div class="codigo">{{codigo}}</div>
-  </div>
+  </header>
 
-  <!-- ── IDENTIFICAÇÃO ─────────────────────────────────────── -->
-  <div class="secao">
+  <section class="secao">
     <h2>Identificação</h2>
     <table>
-      <tr>
-        <td class="rotulo">Data da Ocorrência</td>
-        <td>{{data_ocorrencia_br}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Prontuário</td>
-        <td>{{prontuario}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Número da Prescrição</td>
-        <td>{{numero_prescricao}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Setor</td>
-        <td>{{setor_nome}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Plantão</td>
-        <td>{{plantao}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Status</td>
-        <td><span class="status {{status}}">{{status}}</span></td>
-      </tr>
+      <tr><td class="rotulo">Data da Ocorrência</td><td>{{data_ocorrencia_br}}</td></tr>
+      <tr><td class="rotulo">Prontuário</td><td>{{prontuario}}</td></tr>
+      <tr><td class="rotulo">Número da Prescrição</td><td>{{numero_prescricao}}</td></tr>
+      <tr><td class="rotulo">Setor</td><td>{{setor_nome}}</td></tr>
+      <tr><td class="rotulo">Plantão</td><td>{{plantao}}</td></tr>
+      <tr><td class="rotulo">Status</td><td><span class="status {{status}}">{{status}}</span></td></tr>
     </table>
-  </div>
+  </section>
 
-  <!-- ── MEDICAMENTO E ERRO ────────────────────────────────── -->
-  <div class="secao">
+  <section class="secao">
     <h2>Medicamento e Tipo de Erro</h2>
     <table>
-      <tr>
-        <td class="rotulo">Medicamento</td>
-        <td>{{medicamento_nome}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Tipo de Erro</td>
-        <td>{{tipo_erro_descricao}} ({{tipo_erro_categoria}})</td>
-      </tr>
+      <tr><td class="rotulo">Medicamento</td><td>{{medicamento_nome}}</td></tr>
+      <tr><td class="rotulo">Tipo de Erro</td><td>{{tipo_erro_descricao}} ({{tipo_erro_categoria}})</td></tr>
     </table>
-  </div>
+  </section>
 
-  <!-- ── QUANTIDADES ───────────────────────────────────────── -->
-  <div class="secao">
+  <section class="secao">
     <h2>Quantidades</h2>
     <table>
-      <tr>
-        <td class="rotulo">Quantidade Prescrita</td>
-        <td>{{quantidade_prescrita}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Quantidade Dispensada</td>
-        <td>{{quantidade_dispensada}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Diferença</td>
-        <td>{{diferenca_quantidade}}</td>
-      </tr>
+      <tr><td class="rotulo">Quantidade Prescrita</td><td>{{quantidade_prescrita}}</td></tr>
+      <tr><td class="rotulo">Quantidade Dispensada</td><td>{{quantidade_dispensada}}</td></tr>
+      <tr><td class="rotulo">Diferença</td><td>{{diferenca_quantidade}}</td></tr>
     </table>
-  </div>
+  </section>
 
-  <!-- ── HORÁRIOS ──────────────────────────────────────────── -->
-  <div class="secao">
+  <section class="secao">
     <h2>Horários</h2>
     <table>
-      <tr>
-        <td class="rotulo">Hora da Prescrição</td>
-        <td>{{hora_prescricao}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Hora da Dispensação</td>
-        <td>{{hora_dispensacao}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Diferença (min)</td>
-        <td>{{diferenca_minutos}}</td>
-      </tr>
+      <tr><td class="rotulo">Hora da Prescrição</td><td>{{hora_prescricao}}</td></tr>
+      <tr><td class="rotulo">Hora da Dispensação</td><td>{{hora_dispensacao}}</td></tr>
+      <tr><td class="rotulo">Diferença</td><td>{{diferenca_minutos}}</td></tr>
       <tr>
         <td class="rotulo">Classificação</td>
-        <td>
-          <span class="{{classificacao_horario_class}}">
-            {{classificacao_horario}}
-          </span>
-        </td>
+        <td><span class="{{classificacao_horario_class}}">{{classificacao_horario}}</span></td>
       </tr>
     </table>
-  </div>
+  </section>
 
-  <!-- ── EQUIPE ────────────────────────────────────────────── -->
-  <div class="secao">
+  <section class="secao">
     <h2>Equipe Envolvida</h2>
     <table>
-      <tr>
-        <td class="rotulo">Farmacêutico</td>
-        <td>{{farmaceutico_nome}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Assistente</td>
-        <td>{{assistente_nome}}</td>
-      </tr>
-      <tr>
-        <td class="rotulo">Responsável pelo Erro</td>
-        <td>{{responsavel_erro}}</td>
-      </tr>
+      <tr><td class="rotulo">Farmacêutico</td><td>{{farmaceutico_nome}}</td></tr>
+      <tr><td class="rotulo">Assistente</td><td>{{assistente_nome}}</td></tr>
+      <tr><td class="rotulo">Responsável pelo Erro</td><td>{{responsavel_erro}}</td></tr>
     </table>
-  </div>
+  </section>
 
-  <!-- ── OBSERVAÇÕES ───────────────────────────────────────── -->
   {{#if observacoes}}
-  <div class="secao">
+  <section class="secao">
     <h2>Observações</h2>
     <div class="observacoes">{{observacoes}}</div>
-  </div>
+  </section>
   {{/if}}
 
-  <!-- ── ASSINATURA ────────────────────────────────────────── -->
-  <div class="assinatura">
+  <section class="assinatura">
     <div class="assinatura-linha"></div>
     <div class="assinatura-texto">Coordenadora de Assistência Farmacêutica</div>
-    <div class="assinatura-texto">Ana Carla Yamamoto</div>
-  </div>
+    <div class="assinatura-texto"><strong>Ana Carla Yamamoto</strong></div>
+  </section>
 
-  <!-- ── RODAPÉ ────────────────────────────────────────────── -->
-  <div class="footer">
-    <div>Emitido em: {{data_emissao_br}}</div>
-    <div>Usuário: {{usuario_cadastro}}</div>
-    <div>DispensaAudit v0.1.0</div>
-  </div>
-
+  <footer class="footer">
+    <span>Emitido em: {{data_emissao_br}}</span>
+    <span>Usuário: {{usuario_cadastro}}</span>
+    <span>DispensaAudit v0.1.0</span>
+  </footer>
 </body>
+<!-- CHECKPOINT: o relatório individual deve renderizar dados fictícios, três logos proporcionais e margens A4. -->
 </html>

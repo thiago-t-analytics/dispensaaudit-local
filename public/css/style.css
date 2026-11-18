@@ -1,3 +1,16 @@
+/* DIA 10 ? AJUSTES FINAIS DE ESTILO.
+ * BLOCO D10-B03: o CSS ? ativado ao descomentar o link correspondente em public/index.html.
+ * CONCEITO: organiza??o visual reutiliz?vel e progressiva.
+ * TESTE: depois de ativar o link, confira a p?gina em 375 px e desktop.
+ * REQUER: estrutura HTML do Dia 10. */
+/*
+ * O que faz: mantém estilos legados de componentes como fallback.
+ * Por que: a camada `legacy` fica abaixo do Design System novo mesmo que esta
+ * folha seja carregada por último, permitindo migração visual sem regressões.
+ * Teste visual: confira sidebar, formulário, tabela e modal após navegar pelas
+ * cinco páginas; tokens e layout.css devem permanecer visualmente dominantes.
+ */
+@layer legacy {
 /* =============================================================
    DispensaAudit — Estilos
    ============================================================= */
@@ -796,3 +809,5 @@ table tr:hover td { background: var(--gray-50); }
   .form-actions { flex-direction: column; }
   .form-actions .btn { width: 100%; justify-content: center; }
 }
+}
+/* CHECKPOINT: ao carregar D10-B03, este arquivo participa da camada visual prevista. */

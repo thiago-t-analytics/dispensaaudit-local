@@ -8,6 +8,17 @@
 
 PRAGMA foreign_keys = ON;
 
+-- ╔══════════════════════════════════════════════════════════════╗
+-- ║ 🎓 DIA 04 — BANCO: TABELAS DE REFERÊNCIA                     ║
+-- ║ O QUE ESTE BLOCO FAZ: cria usuários, medicamentos, tipos de  ║
+-- ║ erro, setores, farmacêuticos e assistentes.                  ║
+-- ║ CONCEITO APRENDIDO: PRIMARY KEY, UNIQUE, CHECK e FOREIGN KEY.║
+-- ║ COMO TESTAR: descomente o bloco, rode npm run db:setup numa  ║
+-- ║ base descartável e confira as tabelas no DB Browser.         ║
+-- ║ REQUER: DIA 03 (estrutura do projeto) e cópia de treinamento.║
+-- ╚══════════════════════════════════════════════════════════════╝
+-- ▼▼▼ DESCOMENTE DAQUI — D04-B01 ▼▼▼
+/*
 -- ─────────────────────────────────────────────────────────────
 -- USUARIOS
 -- ─────────────────────────────────────────────────────────────
@@ -83,7 +94,19 @@ CREATE TABLE IF NOT EXISTS assistentes (
 
 CREATE INDEX IF NOT EXISTS idx_assistentes_farmaceutico
   ON assistentes(farmaceutico_id);
+*/
+-- ▲▲▲ ATÉ AQUI — D04-B01 ▲▲▲
 
+-- ╔══════════════════════════════════════════════════════════════╗
+-- ║ 🎓 DIA 04 — BANCO: OCORRÊNCIAS E ÍNDICES                    ║
+-- ║ O QUE ESTE BLOCO FAZ: cria a tabela central e suas relações.║
+-- ║ CONCEITO APRENDIDO: chaves estrangeiras, CHECK e índices.   ║
+-- ║ COMO TESTAR: descomente após D04-B01 e rode db:setup numa   ║
+-- ║ base descartável; confira a tabela ocorrencias.              ║
+-- ║ REQUER: D04-B01 completo para existirem as tabelas referidas.║
+-- ╚══════════════════════════════════════════════════════════════╝
+-- ▼▼▼ DESCOMENTE DAQUI — D04-B02 ▼▼▼
+/*
 -- ─────────────────────────────────────────────────────────────
 -- OCORRENCIAS (tabela central)
 -- ─────────────────────────────────────────────────────────────
@@ -142,7 +165,20 @@ CREATE INDEX IF NOT EXISTS idx_ocorrencias_farmaceutico
   ON ocorrencias(farmaceutico_id);
 CREATE INDEX IF NOT EXISTS idx_ocorrencias_tipo_erro
   ON ocorrencias(tipo_erro_id);
+*/
+-- ▲▲▲ ATÉ AQUI — D04-B02 ▲▲▲
 
+-- ╔══════════════════════════════════════════════════════════════╗
+-- ║ 🎓 DIA 04 — BANCO: LOGS, CONFIGURAÇÕES E VIEW               ║
+-- ║ O QUE ESTE BLOCO FAZ: cria auditoria, configurações e uma   ║
+-- ║ view que reúne os dados relacionados de uma ocorrência.     ║
+-- ║ CONCEITO APRENDIDO: CREATE VIEW e JOIN.                     ║
+-- ║ COMO TESTAR: descomente após D04-B01 e D04-B02; consulte    ║
+-- ║ vw_ocorrencias_completas no DB Browser.                      ║
+-- ║ REQUER: D04-B01 e D04-B02 completos.                         ║
+-- ╚══════════════════════════════════════════════════════════════╝
+-- ▼▼▼ DESCOMENTE DAQUI — D04-B03 ▼▼▼
+/*
 -- ─────────────────────────────────────────────────────────────
 -- LOGS (auditoria)
 -- ─────────────────────────────────────────────────────────────
@@ -201,3 +237,8 @@ JOIN tipos_erro    t ON t.id = o.tipo_erro_id
 JOIN setores       s ON s.id = o.setor_id
 JOIN farmaceuticos f ON f.id = o.farmaceutico_id
 LEFT JOIN assistentes a ON a.id = o.assistente_id;
+*/
+-- ▲▲▲ ATÉ AQUI — D04-B03 ▲▲▲
+
+-- CHECKPOINT: com D04-B01, D04-B02 e D04-B03 ativos, o schema cria
+-- as tabelas, índices e a view necessários à aplicação.

@@ -1,128 +1,165 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- DIA 14-B02: template carregado pelo serviço de PDF; acompanhe indicadores e gráficos gerenciais. -->
 <head>
   <meta charset="UTF-8">
   <style>
-    @page { size: A4; margin: 1.5cm 1.2cm; }
+    /* Resumo para impressão: indicadores rápidos, rankings e cores institucionais. */
+    @page { size: A4; }
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Helvetica', 'Arial', sans-serif;
-      font-size: 10pt;
-      color: #2E2E2E;
-      line-height: 1.5;
+      margin: 0;
+      color: #292524;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.45;
     }
-    .header {
+    /* Mantém as três marcas proporcionais e alinhadas dentro da área útil A4. */
+    .logos-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #3A506B;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
       margin-bottom: 20px;
+      border-bottom: 1px solid #E5E7EB;
     }
-    .header h1 { font-size: 18pt; color: #3A506B; margin: 0; }
-    .header .periodo { font-size: 10pt; color: #6B7280; text-align: right; }
+    .logos-header .logo {
+      max-height: 55px;
+      max-width: 140px;
+      object-fit: contain;
+    }
+    .logos-header .logo-funeas { max-height: 60px; }
+    .logos-header .logo-hriv { max-height: 55px; }
+    .logos-header .logo-parana { max-height: 50px; }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #0EA5E9;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-mark { width: 38px; height: 38px; flex: 0 0 auto; }
+    .brand-copy h1 { margin: 0; color: #0369A1; font-size: 17pt; line-height: 1.2; }
+    .brand-copy p { margin: 3px 0 0; color: #57534E; font-size: 8pt; }
+    .periodo { color: #57534E; font-size: 8.5pt; text-align: right; }
     .resumo-executivo {
-      background: #F8FAFC;
-      border-left: 3px solid #3A506B;
-      padding: 12px 16px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      padding: 10px 13px;
+      border-left: 3px solid #F59E0B;
+      background: linear-gradient(120deg, #F0F9FF 0%, #FFFBEB 100%);
     }
-    .resumo-executivo p { margin: 0 0 8px 0; }
+    .resumo-executivo p { margin: 0 0 6px; }
+    .resumo-executivo p:last-child { margin-bottom: 0; }
     .kpis {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 9px;
+      margin-bottom: 16px;
     }
     .card {
-      background: white;
-      border: 1px solid #E2E8F0;
-      border-radius: 6px;
-      padding: 10px 12px;
+      min-width: 0;
+      padding: 9px 11px;
+      border: 1px solid #E7E5E4;
+      border-radius: 7px;
+      background: linear-gradient(145deg, #FFFFFF 0%, #F0F9FF 100%);
+      break-inside: avoid;
     }
     .card .label {
-      font-size: 8pt;
-      color: #6B7280;
-      text-transform: uppercase;
       margin-bottom: 4px;
-    }
-    .card .valor { font-size: 16pt; font-weight: bold; color: #3A506B; }
-    .card .sub { font-size: 8pt; color: #6B7280; }
-    .secao h2 {
-      font-size: 11pt;
-      color: #3A506B;
-      background: #F1F5F9;
-      padding: 6px 10px;
-      margin: 20px 0 8px 0;
-      border-left: 3px solid #FFC107;
-    }
-    table { width: 100%; border-collapse: collapse; font-size: 9pt; }
-    table th {
-      background: #3A506B;
-      color: white;
-      padding: 6px 8px;
-      text-align: left;
-      font-size: 8pt;
+      color: #57534E;
+      font-size: 7.5pt;
+      font-weight: bold;
       text-transform: uppercase;
     }
-    table td { padding: 5px 8px; border-bottom: 1px solid #E2E8F0; }
-    table tr:nth-child(even) td { background: #FAFBFC; }
+    .card .valor { color: #075985; font-size: 15pt; font-weight: bold; overflow-wrap: anywhere; }
+    .card .sub { color: #57534E; font-size: 7.5pt; font-weight: normal; }
+    .secao { margin-bottom: 14px; }
+    .secao h2 {
+      margin: 0 0 7px;
+      padding: 6px 9px;
+      border-left: 3px solid #F59E0B;
+      background: #E0F2FE;
+      color: #075985;
+      font-size: 10pt;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 8pt; }
+    table th {
+      padding: 5px 7px;
+      background: #0369A1;
+      color: #FFFFFF;
+      font-size: 7.5pt;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    table td { padding: 5px 7px; border-bottom: 1px solid #E7E5E4; vertical-align: middle; }
+    table tbody tr:nth-child(even) td { background: #FAFAF9; }
+    thead { display: table-header-group; }
+    tr { break-inside: avoid; }
     .barra-container {
-      background: #E2E8F0;
-      height: 18px;
-      border-radius: 9px;
+      height: 16px;
+      margin: 2px 0;
       overflow: hidden;
-      margin: 4px 0;
+      border-radius: 999px;
+      background: #E7E5E4;
     }
     .barra {
-      background: #3A506B;
+      width: var(--barra-width, 0%);
+      max-width: 100%;
       height: 100%;
-      color: white;
-      font-size: 8pt;
       padding-left: 6px;
-      line-height: 18px;
+      background: linear-gradient(180deg, #38BDF8 0%, #0369A1 100%);
+      color: #FFFFFF;
+      font-size: 7pt;
       font-weight: bold;
-    }
-    .footer {
-      margin-top: 30px;
-      padding-top: 10px;
-      border-top: 1px solid #E2E8F0;
-      font-size: 8pt;
-      color: #6B7280;
-      display: flex;
-      justify-content: space-between;
+      line-height: 16px;
     }
     .assinatura {
-      margin-top: 40px;
+      margin: 24px 0 18px;
       text-align: center;
+      break-inside: avoid;
     }
-    .assinatura-linha {
-      width: 300px;
-      border-top: 1px solid #2E2E2E;
-      margin: 0 auto;
-    }
-    .assinatura-texto {
-      margin-top: 5px;
-      font-size: 9pt;
+    .assinatura-linha { width: 260px; margin: 0 auto; border-top: 1px solid #57534E; }
+    .assinatura-texto { margin-top: 4px; font-size: 8pt; }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid #D6D3D1;
+      color: #78716C;
+      font-size: 7.5pt;
     }
   </style>
 </head>
 <body>
-
-  <div class="header">
-    <div>
-      <h1>Relatório Gerencial</h1>
-      <div style="font-size: 9pt; color: #6B7280;">
-        Indicadores de Não Conformidades na Dispensação
+  <!-- Logos opcionais; o template as omite se algum PNG estiver indisponível. -->
+  <div class="logos-header">
+    {{#if logo_funeas}}<img src="{{logo_funeas}}" alt="FUNEAS" class="logo logo-funeas">{{/if}}
+    {{#if logo_hriv}}<img src="{{logo_hriv}}" alt="HRIV" class="logo logo-hriv">{{/if}}
+    {{#if logo_parana}}<img src="{{logo_parana}}" alt="Paraná" class="logo logo-parana">{{/if}}
+  </div>
+  <header class="header">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" role="img" aria-label="DispensaAudit">
+        <circle cx="20" cy="20" r="19" fill="#0369A1"/>
+        <text x="20" y="25" fill="#FFFFFF" font-family="Arial, sans-serif"
+          font-size="12" font-weight="700" text-anchor="middle">DA</text>
+      </svg>
+      <div class="brand-copy">
+        <h1>Relatório Gerencial</h1>
+        <p>Indicadores de não conformidades na dispensação</p>
       </div>
     </div>
     <div class="periodo">
       <div>Período: {{periodo}}</div>
       <div>Emissão: {{data_emissao_br}}</div>
     </div>
-  </div>
+  </header>
 
-  <!-- Resumo Executivo -->
-  <div class="resumo-executivo">
+  <section class="resumo-executivo">
     <p><strong>Resumo Executivo</strong></p>
     <p>
       Durante o período analisado, foram registradas <strong>{{total}}</strong>
@@ -137,121 +174,92 @@
       foi o mais afetado, e o tipo de erro mais frequente foi
       <strong>{{tipo_mais_frequente}}</strong> ({{tipo_mais_frequente_qtd}} ocorrências).
     </p>
-  </div>
+  </section>
 
-  <!-- KPIs principais -->
-  <div class="kpis">
-    <div class="card">
+  <section class="kpis" aria-label="Indicadores gerenciais">
+    <article class="card">
       <div class="label">Total de Ocorrências</div>
       <div class="valor">{{total}}</div>
-    </div>
-    <div class="card">
+    </article>
+    <article class="card">
       <div class="label">Ativas / Concluídas</div>
-      <div class="valor" style="font-size: 12pt;">
-        {{ativas}} <span class="sub">/</span> {{concluidas}}
-      </div>
+      <div class="valor">{{ativas}} <span class="sub">/</span> {{concluidas}}</div>
       <div class="sub">{{percentual_ativas}}% / {{percentual_concluidas}}%</div>
-    </div>
-    <div class="card">
+    </article>
+    <article class="card">
       <div class="label">Setor Mais Afetado</div>
-      <div class="valor" style="font-size: 11pt;">{{setor_mais_frequente}}</div>
+      <div class="valor" style="font-size: 10pt;">{{setor_mais_frequente}}</div>
       <div class="sub">{{setor_mais_frequente_qtd}} ocorrências</div>
-    </div>
-    <div class="card">
+    </article>
+    <article class="card">
       <div class="label">Plantão Mais Afetado</div>
-      <div class="valor" style="font-size: 11pt;">{{plantao_maior}}</div>
+      <div class="valor" style="font-size: 10pt;">{{plantao_maior}}</div>
       <div class="sub">{{plantao_maior_qtd}} ocorrências</div>
-    </div>
-    <div class="card">
+    </article>
+    <article class="card">
       <div class="label">Tipo de Erro Predominante</div>
-      <div class="valor" style="font-size: 11pt;">{{tipo_mais_frequente}}</div>
+      <div class="valor" style="font-size: 10pt;">{{tipo_mais_frequente}}</div>
       <div class="sub">{{tipo_mais_frequente_qtd}} ocorrências</div>
-    </div>
-    <div class="card">
+    </article>
+    <article class="card">
       <div class="label">Medicamento Mais Envolvido</div>
-      <div class="valor" style="font-size: 10pt;">{{medicamento_mais_envolvido}}</div>
+      <div class="valor" style="font-size: 9pt;">{{medicamento_mais_envolvido}}</div>
       <div class="sub">{{medicamento_mais_envolvido_qtd}} ocorrências</div>
-    </div>
-  </div>
+    </article>
+  </section>
 
-  <!-- Top Tipos de Erro -->
-  <div class="secao">
+  <section class="secao">
     <h2>Top 10 — Tipos de Erro</h2>
     <table>
-      <thead>
-        <tr><th>#</th><th>Tipo de Erro</th><th>Ocorrências</th><th>Distribuição</th></tr>
-      </thead>
+      <thead><tr><th>#</th><th>Tipo de Erro</th><th>Ocorrências</th><th>Distribuição</th></tr></thead>
       <tbody>
         {{#topTiposErro}}
         <tr>
-          <td>{{item_index}}</td>
-          <td>{{nome}}</td>
-          <td>{{valor}}</td>
-          <td>
-            <div class="barra-container">
-              <div class="barra" style="--barra-width: {{percentual}}%;">{{valor}}</div>
-            </div>
-          </td>
+          <td>{{item_index}}</td><td>{{nome}}</td><td>{{valor}}</td>
+          <td><div class="barra-container"><div class="barra" style="--barra-width: {{percentual}}%;">{{valor}}</div></div></td>
         </tr>
         {{/topTiposErro}}
       </tbody>
     </table>
-  </div>
+  </section>
 
-  <!-- Top Setores -->
-  <div class="secao">
+  <section class="secao">
     <h2>Top 10 — Setores</h2>
     <table>
-      <thead>
-        <tr><th>#</th><th>Setor</th><th>Ocorrências</th><th>Distribuição</th></tr>
-      </thead>
+      <thead><tr><th>#</th><th>Setor</th><th>Ocorrências</th><th>Distribuição</th></tr></thead>
       <tbody>
         {{#topSetores}}
         <tr>
-          <td>{{item_index}}</td>
-          <td>{{nome}}</td>
-          <td>{{valor}}</td>
-          <td>
-            <div class="barra-container">
-              <div class="barra" style="--barra-width: {{percentual}}%;">{{valor}}</div>
-            </div>
-          </td>
+          <td>{{item_index}}</td><td>{{nome}}</td><td>{{valor}}</td>
+          <td><div class="barra-container"><div class="barra" style="--barra-width: {{percentual}}%;">{{valor}}</div></div></td>
         </tr>
         {{/topSetores}}
       </tbody>
     </table>
-  </div>
+  </section>
 
-  <!-- Top Medicamentos -->
-  <div class="secao">
+  <section class="secao">
     <h2>Top 10 — Medicamentos Envolvidos</h2>
     <table>
-      <thead>
-        <tr><th>#</th><th>Medicamento</th><th>Ocorrências</th></tr>
-      </thead>
+      <thead><tr><th>#</th><th>Medicamento</th><th>Ocorrências</th></tr></thead>
       <tbody>
         {{#topMedicamentos}}
-        <tr>
-          <td>{{item_index}}</td>
-          <td>{{nome}}</td>
-          <td>{{valor}}</td>
-        </tr>
+        <tr><td>{{item_index}}</td><td>{{nome}}</td><td>{{valor}}</td></tr>
         {{/topMedicamentos}}
       </tbody>
     </table>
-  </div>
+  </section>
 
-  <!-- Assinatura -->
-  <div class="assinatura">
+  <section class="assinatura">
     <div class="assinatura-linha"></div>
     <div class="assinatura-texto">Coordenadora de Assistência Farmacêutica</div>
-    <div class="assinatura-texto">Ana Carla Yamamoto</div>
-  </div>
+    <div class="assinatura-texto"><strong>Ana Carla Yamamoto</strong></div>
+  </section>
 
-  <div class="footer">
-    <div>Emitido em: {{data_emissao_br}}</div>
-    <div>DispensaAudit v0.1.0</div>
-  </div>
-
+  <footer class="footer">
+    <span>Emitido em: {{data_emissao_br}}</span>
+    <span>DispensaAudit v0.1.0</span>
+  </footer>
 </body>
+<!-- CHECKPOINT: o relatório gerencial deve exibir gráficos sem ultrapassar a área útil A4. -->
 </html>

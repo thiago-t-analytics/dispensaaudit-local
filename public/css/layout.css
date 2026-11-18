@@ -1,3 +1,8 @@
+/* DIA 10 ? LAYOUT E NAVEGA??O RESPONSIVA.
+ * BLOCO D10-B03: o CSS ? ativado ao descomentar o link correspondente em public/index.html.
+ * CONCEITO: organiza??o visual reutiliz?vel e progressiva.
+ * TESTE: depois de ativar o link, confira a p?gina em 375 px e desktop.
+ * REQUER: estrutura HTML do Dia 10. */
 /*
  * PACOTE 2 — LAYOUT
  * O que faz: organiza a navegação lateral, o cabeçalho, o conteúdo e o drawer
@@ -84,6 +89,9 @@ body {
 }
 
 .nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
   min-height: 2.625rem;
   margin: 2px 0;
@@ -104,6 +112,7 @@ body {
 .nav-item:hover {
   background: rgb(255 255 255 / 8%);
   color: #ffffff;
+  transform: scale(1.02);
 }
 
 .nav-item:active {
@@ -112,10 +121,21 @@ body {
 
 .nav-item.active {
   border-color: rgb(255 255 255 / 10%);
-  border-left-color: var(--color-secondary-500);
+  border-left-color: transparent;
   background: rgb(255 255 255 / 13%);
   color: #ffffff;
   font-weight: var(--font-weight-semibold);
+}
+
+.nav-item.active::before {
+  position: absolute;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  left: -1px;
+  width: 3px;
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
+  background: var(--color-accent-500);
+  content: "";
 }
 
 .nav-icon {
@@ -163,6 +183,9 @@ body {
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -222,6 +245,8 @@ body {
 }
 
 .header-right {
+  display: flex;
+  align-items: center;
   gap: var(--space-4);
   color: var(--text-secondary);
   font-size: var(--font-size-sm);
@@ -290,6 +315,12 @@ body {
   transition: background-color var(--transition-fast);
 }
 
+.user-info {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 .user-selector:hover {
   background: var(--surface-sunken);
 }
@@ -315,6 +346,45 @@ body {
   max-width: var(--content-max-width);
   margin-inline: auto;
   animation: page-enter 200ms ease both;
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.page-heading h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-1);
+  color: var(--color-primary-700);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.filter-chips:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: calc(-1 * var(--space-3)) 0 var(--space-5);
+}
+
+.pdf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
 }
 
 /* Estados inativos não devem aparecer visualmente nem na árvore acessível. */
@@ -509,24 +579,34 @@ body {
     gap: var(--space-2);
   }
 
+  .breadcrumbs,
   .header-status,
-  .date-time {
+  .header-icon-button,
+  .date-time,
+  .user-info #userName {
     display: none;
   }
 
-  .user-selector {
-    padding: var(--space-1);
-  }
-
-  .user-selector #userName {
-    max-width: 6rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .user-info {
+    padding: 0;
   }
 
   .header-left h2 {
     font-size: var(--font-size-lg);
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-heading .btn {
+    width: 100%;
+  }
+
+  .pdf-actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -556,3 +636,154 @@ body {
     transition: none;
   }
 }
+
+/* Etapas e prévia do cadastro agrupam informações sem interferir nos formulários legados. */
+.wizard-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.wizard-steps li {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-default);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.wizard-steps li span {
+  display: inline-grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.wizard-steps li[aria-current="step"] {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+}
+
+.wizard-steps li[aria-current="step"] span,
+.wizard-steps li.concluida span {
+  background: var(--color-primary-600);
+  color: #ffffff;
+}
+
+.wizard-steps li.concluida {
+  border-color: var(--color-neutral-200);
+}
+
+.lote-identificacao,
+.lote-etapa {
+  margin-bottom: var(--space-5);
+}
+
+.lote-etapa[hidden] {
+  display: none;
+}
+
+.lote-preview-heading h4 {
+  margin-bottom: var(--space-1);
+}
+
+.lote-preview-heading p {
+  margin-top: 0;
+  color: var(--text-secondary);
+}
+
+.lote-itens-lista {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.lote-item-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-canvas);
+}
+
+.lote-item-dados {
+  min-width: 0;
+}
+
+.lote-item-dados h5 {
+  margin: 0 0 var(--space-1);
+  color: var(--text-primary);
+}
+
+.lote-item-dados p {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+}
+
+.lote-item-dados dl {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.lote-item-dados dl div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+}
+
+.lote-item-dados dt {
+  font-weight: var(--font-weight-semibold);
+}
+
+.lote-item-dados dd {
+  margin: 0;
+}
+
+.lote-item-acoes {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--space-2);
+}
+
+.lote-vazio {
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 639px) {
+  .wizard-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .lote-item-card {
+    flex-direction: column;
+  }
+
+  .lote-item-acoes,
+  .lote-item-acoes .btn {
+    width: 100%;
+  }
+}
+/* CHECKPOINT: ao carregar D10-B03, este arquivo participa da camada visual prevista. */

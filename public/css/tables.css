@@ -1,0 +1,285 @@
+/* DIA 10 ? ESTILOS DAS TABELAS.
+ * BLOCO D10-B03: o CSS ? ativado ao descomentar o link correspondente em public/index.html.
+ * CONCEITO: organiza??o visual reutiliz?vel e progressiva.
+ * TESTE: depois de ativar o link, confira a p?gina em 375 px e desktop.
+ * REQUER: estrutura HTML do Dia 10. */
+/*
+ * O que faz: dá acabamento às tabelas administrativas e à timeline de auditoria.
+ * Por que existe: Configurações e Logs precisam de leitura densa sem parecer uma
+ * tabela legada, mantendo ações, estados e paginação visualmente consistentes.
+ * Como testar: navegue pelas abas de Configurações e abra Logs com registros.
+ */
+#configContent .table-wrapper,
+#page-logs .log-panel {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-default);
+  box-shadow: var(--shadow-sm);
+}
+
+#configContent .table-header,
+#page-logs .log-panel > .table-header {
+  align-items: center;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--border-default);
+}
+
+#configContent .table-header h3,
+#page-logs .table-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.table-count,
+.log-info {
+  margin: var(--space-1) 0 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+#configContent .data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--font-size-sm);
+}
+
+#configContent .data-table th {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-align: left;
+  text-transform: uppercase;
+}
+
+#configContent .data-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+  color: var(--text-secondary);
+}
+
+#configContent .data-table tbody tr {
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+#configContent .data-table tbody tr:hover {
+  background: var(--surface-sunken);
+  box-shadow: inset 3px 0 var(--color-accent-500);
+}
+
+#configContent .data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.crud-error {
+  padding: var(--space-4);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  background: var(--color-error-soft);
+  color: var(--color-error-text);
+}
+
+#page-logs .filters-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr)) auto;
+  align-items: end;
+  gap: var(--space-3);
+}
+
+#page-logs .filter-group {
+  min-width: 0;
+}
+
+#page-logs .filter-group label {
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.log-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.log-timeline {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-6);
+  list-style: none;
+}
+
+.log-event {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(130px, 170px) 28px minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--space-4);
+  min-width: 0;
+}
+
+.log-event-time {
+  padding-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.log-event-marker {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-full);
+  background: var(--surface-default);
+}
+
+.log-event:not(:last-child)::after {
+  position: absolute;
+  top: 36px;
+  bottom: calc(-1 * var(--space-4));
+  left: 199px;
+  width: 1px;
+  background: var(--border-default);
+  content: "";
+}
+
+.log-event-marker svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.log-icon-success {
+  color: var(--color-success-text);
+  background: var(--color-success-soft);
+}
+
+.log-icon-warning {
+  color: var(--color-warning-text);
+  background: var(--color-warning-soft);
+}
+
+.log-icon-danger {
+  color: var(--color-error-text);
+  background: var(--color-error-soft);
+}
+
+.log-icon-neutral {
+  color: var(--color-info-text);
+  background: var(--color-info-soft);
+}
+
+.log-event-content {
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+}
+
+.log-event-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.log-action {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.log-user,
+.log-event-content p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.log-event-content p {
+  margin: var(--space-1) 0 0;
+  overflow-wrap: anywhere;
+}
+
+.log-empty {
+  padding: var(--space-8) var(--space-4);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+#page-logs .table-footer {
+  border-top: 1px solid var(--border-default);
+}
+
+@media (max-width: 1023px) {
+  #page-logs .filters-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 639px) {
+  #configContent .table-header,
+  #page-logs .log-panel > .table-header,
+  #page-logs .table-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: var(--space-4);
+  }
+
+  #page-logs .filters-bar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .log-timeline {
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .log-event {
+    grid-template-columns: 24px minmax(0, 1fr);
+    column-gap: var(--space-3);
+  }
+
+  .log-event-time {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 0 0 var(--space-1);
+  }
+
+  .log-event-marker {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 24px;
+    height: 24px;
+  }
+
+  .log-event:not(:last-child)::after {
+    top: 32px;
+    bottom: calc(-1 * var(--space-3));
+    left: 11px;
+  }
+
+  .log-event-content {
+    grid-column: 2;
+    grid-row: 2;
+    padding: var(--space-3);
+  }
+}
+/* CHECKPOINT: ao carregar D10-B03, este arquivo participa da camada visual prevista. */

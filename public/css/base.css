@@ -1,3 +1,8 @@
+/* DIA 10 ? ESTILOS BASE E TIPOGRAFIA.
+ * BLOCO D10-B02: o CSS ? ativado ao descomentar o link correspondente em public/index.html.
+ * CONCEITO: organiza??o visual reutiliz?vel e progressiva.
+ * TESTE: depois de ativar o link, confira a p?gina em 375 px e desktop.
+ * REQUER: estrutura HTML do Dia 10. */
 /*
  * DESIGN SYSTEM — BASE
  * O que faz: normaliza medidas, melhora legibilidade e define estilos globais
@@ -33,6 +38,22 @@ body {
   line-height: var(--line-height-normal);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
+}
+
+p {
+  line-height: var(--line-height-normal);
 }
 
 button,
@@ -108,3 +129,4 @@ table {
     transition-duration: 0.01ms !important;
   }
 }
+/* CHECKPOINT: ao carregar D10-B02, este arquivo participa da camada visual prevista. */

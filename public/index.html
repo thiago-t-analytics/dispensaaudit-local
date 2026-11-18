@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DispensaAudit — Gestão de Não Conformidades</title>
-  <!-- A folha legada mantém a estrutura; tokens e camadas novas sobrescrevem apenas o visual. -->
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/components.css">
-  <link rel="stylesheet" href="/css/layout.css">
+  <!-- D10-B01: a estrutura semântica das páginas está pronta para leitura; os estilos e scripts são liberados nos dias seguintes. -->
+  <!-- D10-B02: descomente os estilos fundamentais na ordem indicada. -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D10-B02 ▼▼▼ -->
+  <!-- <link rel="stylesheet" href="/css/tokens.css"> -->
+  <!-- <link rel="stylesheet" href="/css/base.css"> -->
+  <!-- <link rel="stylesheet" href="/css/components.css"> -->
+  <!-- ▲▲▲ ATÉ AQUI — D10-B02 ▲▲▲ -->
+  <!-- D10-B03: habilita layout, dashboard, gráficos, formulários e tabelas. -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D10-B03 ▼▼▼ -->
+  <!-- <link rel="stylesheet" href="/css/layout.css"> -->
+  <!-- <link rel="stylesheet" href="/css/dashboard.css"> -->
+  <!-- <link rel="stylesheet" href="/css/charts.css"> -->
+  <!-- <link rel="stylesheet" href="/css/forms.css"> -->
+  <!-- <link rel="stylesheet" href="/css/tables.css"> -->
+  <!-- <link rel="stylesheet" href="/css/style.css"> -->
+  <!-- ▲▲▲ ATÉ AQUI — D10-B03 ▲▲▲ -->
 </head>
 <body>
   <a class="skip-link" href="#mainContent">Pular para o conteúdo</a>
@@ -36,11 +46,17 @@
         <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.2"/><rect x="13.5" y="11.5" width="7" height="9" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/></svg>
       </span><span>Dashboard</span>
     </button>
-    <button class="nav-item" type="button" data-page="ocorrencias"
-      aria-controls="page-ocorrencias">
+    <button class="nav-item" type="button" data-page="ocorrencias-lista"
+      aria-controls="page-ocorrencias-lista">
       <span class="nav-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M14 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V9Z"/><path d="M14 3.5V9h5.5M8 13h8M8 16.5h8"/></svg>
-      </span><span>Ocorrências</span>
+        <svg viewBox="0 0 24 24"><path d="M8 5h12M8 12h12M8 19h12"/><path d="M3.5 5h.01M3.5 12h.01M3.5 19h.01"/></svg>
+      </span><span>Ocorrências Cadastradas</span>
+    </button>
+    <button class="nav-item" type="button" data-page="ocorrencias-lancar"
+      aria-controls="page-ocorrencias-lancar">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+      </span><span>Lançar Ocorrência</span>
     </button>
     <button class="nav-item" type="button" data-page="configuracoes"
       aria-controls="page-configuracoes">
@@ -86,13 +102,13 @@
           <span class="status-indicator" aria-hidden="true"></span>
           <span>Ambiente local</span>
         </div>
-        <button class="header-icon-button" id="btnOpenLogs" type="button"
-          aria-label="Abrir atividade e logs de auditoria" title="Logs de auditoria">
+        <button class="header-icon-button" id="btnNotifications" type="button"
+          aria-label="Notificações (somente visual)" title="Notificações">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/>
           </svg>
         </button>
-        <div class="user-info" aria-label="Sessão local ativa">
+        <div class="user-info user-selector" aria-label="Usuário local: Sistema">
           <div class="avatar" id="userAvatar">S</div>
           <span id="userName">Sistema local</span>
         </div>
@@ -122,11 +138,12 @@
     </div>
 
     <!-- ── PAGE: DASHBOARD ────────────────────────────────── -->
-    <div class="page active" id="page-dashboard">
+    <section class="page active" id="page-dashboard" aria-labelledby="dashboardHeading">
+      <h3 class="visually-hidden" id="dashboardHeading">Visão geral do sistema</h3>
       <!-- Filtros -->
       <div class="filters-bar">
         <div class="filter-group">
-          <label>Período</label>
+          <label for="filterPeriodo">Período</label>
           <select id="filterPeriodo">
             <option value="hoje">Hoje</option>
             <option value="7dias">Últimos 7 dias</option>
@@ -136,7 +153,7 @@
           </select>
         </div>
         <div class="filter-group">
-          <label>Status</label>
+          <label for="filterStatus">Status</label>
           <select id="filterStatus">
             <option value="todas" selected>Todas</option>
             <option value="Ativa">Ativas</option>
@@ -144,7 +161,7 @@
           </select>
         </div>
         <div class="filter-group">
-          <label>Plantão</label>
+          <label for="filterPlantao">Plantão</label>
           <select id="filterPlantao">
             <option value="">Todos</option>
             <option value="Diurno">Diurno</option>
@@ -152,58 +169,102 @@
           </select>
         </div>
         <div class="filter-group">
-          <label>Setor</label>
+          <label for="filterSetor">Setor</label>
           <select id="filterSetor">
             <option value="">Todos</option>
           </select>
         </div>
         <div class="filter-group">
-          <label>Tipo de Erro</label>
+          <label for="filterTipoErro">Tipo de Erro</label>
           <select id="filterTipoErro">
             <option value="">Todos</option>
           </select>
         </div>
         <div class="filter-group">
-          <label>Farmacêutico</label>
+          <label for="filterFarmaceutico">Farmacêutico</label>
           <select id="filterFarmaceutico">
             <option value="">Todos</option>
           </select>
         </div>
         <div class="filter-group">
           <label>&nbsp;</label>
-          <button class="btn btn-primary" onclick="Dashboard.carregar()">
-            🔄 Atualizar
-          </button>
-        </div>
-        <div class="filter-group">
-          <label>&nbsp;</label>
-          <button class="btn btn-pdf" onclick="Dashboard.gerarPdfGerencial()">
-            📄 PDF Gerencial
+          <button class="btn btn-primary" id="btnAtualizarDashboard" onclick="window.Dashboard && window.Dashboard.carregar()">
+            Atualizar
           </button>
         </div>
       </div>
 
-      <!-- KPIs -->
-      <div class="kpi-grid" id="kpiGrid"></div>
+      <div class="filter-chips" id="filterChips" aria-live="polite" hidden></div>
 
-      <!-- Gráficos -->
+      <section class="pdf-actions" aria-label="Relatórios em PDF">
+        <button class="btn btn-pdf" id="btnPdfIndividual" type="button">
+          PDF Individual
+        </button>
+        <button class="btn btn-pdf" id="btnPdfFarmaceutico" type="button">
+          PDF por Farmacêutico
+        </button>
+        <button class="btn btn-pdf" id="btnPdfGerencial" type="button"
+          onclick="window.Dashboard && window.Dashboard.gerarPdfGerencial()">
+          PDF Gerencial
+        </button>
+      </section>
+
+      <!-- Os módulos de dashboard preenchem estes containers após a resposta da API. -->
+      <div class="kpi-grid" id="kpiGrid" aria-live="polite"></div>
       <div class="charts-grid" id="chartsGrid"></div>
+    </section>
 
-      <!-- Tabela -->
+    <!-- A tabela fica separada do Dashboard, com IDs mantidos para a paginação atual. -->
+    <section class="page" id="page-ocorrencias-lista" aria-labelledby="listaHeading">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Registro e acompanhamento</p>
+          <h3 id="listaHeading">Ocorrências cadastradas</h3>
+        </div>
+        <button class="btn btn-primary" id="btnNovaOcorrencia" type="button"
+          data-page="ocorrencias-lancar">
+          Nova Ocorrência
+        </button>
+      </div>
+
+      <div class="filters-bar list-filters">
+        <div class="filter-group">
+          <label for="tableSearch">Buscar</label>
+          <input type="search" id="tableSearch" placeholder="Código, prontuário ou medicamento"
+            autocomplete="off">
+        </div>
+        <div class="filter-group">
+          <label for="listPeriodoInicio">De</label>
+          <input type="date" id="listPeriodoInicio">
+        </div>
+        <div class="filter-group">
+          <label for="listPeriodoFim">Até</label>
+          <input type="date" id="listPeriodoFim">
+        </div>
+        <div class="filter-group">
+          <label for="listStatus">Status</label>
+          <select id="listStatus">
+            <option value="">Ativas e concluídas</option>
+            <option value="Ativa">Ativas</option>
+            <option value="Concluida">Concluídas</option>
+            <option value="Excluida">Excluídas</option>
+            <option value="todas">Todas (inclui excluídas)</option>
+          </select>
+        </div>
+      </div>
       <div class="table-wrapper">
         <div class="table-header">
-          <h3>Ocorrências</h3>
-          <input type="text" id="tableSearch" placeholder="Buscar..." oninput="Dashboard.filtrarTabela()">
+          <h3>Registros</h3>
         </div>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Código</th>
                 <th>Data</th>
                 <th>Prontuário</th>
                 <th>Medicamento</th>
-                <th>Tipo de Erro</th>
+                <th>Tipo</th>
                 <th>Farmacêutico</th>
                 <th>Setor</th>
                 <th>Status</th>
@@ -218,164 +279,171 @@
           <div class="pagination" id="tablePagination"></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ── PAGE: OCORRÊNCIAS ──────────────────────────────── -->
-    <div class="page" id="page-ocorrencias">
-      <div class="form-card" style="margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <h3>Registrar Nova Ocorrência</h3>
-          <div style="text-align: right;">
-            <span style="font-size: 13px; color: #6B7280;">Próximo ID:</span>
-            <strong id="proximoIdOcorrencia" style="font-size: 18px; color: #3A506B;">
-              Calculando...
-            </strong>
-          </div>
+    <!-- O fluxo em etapas compartilha os dados de identificação entre os itens do lote. -->
+    <section class="page" id="page-ocorrencias-lancar" aria-labelledby="lancarHeading">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Registro em lote</p>
+          <h3 id="lancarHeading">Lançar ocorrências</h3>
         </div>
       </div>
 
-      <div class="form-grid">
-        <!-- Identificação -->
-        <div class="form-card">
-          <h4>Identificação</h4>
-          <div class="form-group">
-            <label>Data da Ocorrência <span class="required">*</span></label>
-            <input type="date" id="ocDataOcorrencia">
-          </div>
-          <div class="form-group">
-            <label>Prontuário <span class="required">*</span></label>
-            <input type="text" id="ocProntuario" placeholder="Ex: 123456789">
-          </div>
-          <div class="form-group">
-            <label>Número da Prescrição <span class="required">*</span></label>
-            <input type="text" id="ocNumeroPrescricao" placeholder="Ex: 123456789">
-          </div>
-        </div>
+      <ol class="wizard-steps" aria-label="Etapas do lançamento">
+        <li data-etapa-indicador="1" aria-current="step"><span>1</span> Identificação</li>
+        <li data-etapa-indicador="2"><span>2</span> Itens</li>
+        <li data-etapa-indicador="3"><span>3</span> Revisão e envio</li>
+      </ol>
 
-        <!-- Medicamento -->
-        <div class="form-card">
-          <h4>Medicamento e Erro</h4>
+      <section class="form-card lote-identificacao" aria-labelledby="loteIdentificacaoTitulo">
+        <h4 id="loteIdentificacaoTitulo">Identificação compartilhada</h4>
+        <div class="form-grid">
           <div class="form-group">
-            <label>Medicamento <span class="required">*</span></label>
-            <select id="ocMedicamento">
-              <option value="">Selecione...</option>
-            </select>
+            <label for="loteDataOcorrencia">Data da ocorrência <span class="required">*</span></label>
+            <input type="date" id="loteDataOcorrencia" required>
           </div>
           <div class="form-group">
-            <label>Tipo de Erro <span class="required">*</span></label>
-            <select id="ocTipoErro">
-              <option value="">Selecione...</option>
-            </select>
+            <label for="loteProntuario">Prontuário <span class="required">*</span></label>
+            <input type="text" id="loteProntuario" required autocomplete="off">
           </div>
           <div class="form-group">
-            <label>Setor <span class="required">*</span></label>
-            <select id="ocSetor">
-              <option value="">Selecione...</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Quantidades -->
-        <div class="form-card">
-          <h4>Quantidades</h4>
-          <div class="form-group">
-            <label>Quantidade Prescrita <span class="required">*</span></label>
-            <input type="number" id="ocQuantidadePrescrita" step="0.01" min="0" oninput="Ocorrencias.calcularDiferenca()">
+            <label for="loteNumeroPrescricao">Número da prescrição <span class="required">*</span></label>
+            <input type="text" id="loteNumeroPrescricao" required autocomplete="off">
           </div>
           <div class="form-group">
-            <label>Quantidade Dispensada</label>
-            <input type="number" id="ocQuantidadeDispensada" step="0.01" min="0" oninput="Ocorrencias.calcularDiferenca()">
+            <label for="loteSetor">Setor <span class="required">*</span></label>
+            <select id="loteSetor" required><option value="">Selecione...</option></select>
           </div>
           <div class="form-group">
-            <label>Diferença (automático)</label>
-            <div class="calc-display" id="ocDiferencaDisplay">0</div>
-          </div>
-        </div>
-
-        <!-- Horários -->
-        <div class="form-card">
-          <h4>Horários</h4>
-          <div class="form-group">
-            <label>Hora da Prescrição</label>
-            <input type="time" id="ocHoraPrescricao" oninput="Ocorrencias.calcularHorario()">
-          </div>
-          <div class="form-group">
-            <label>Hora da Dispensação</label>
-            <input type="time" id="ocHoraDispensacao" oninput="Ocorrencias.calcularHorario()">
-          </div>
-          <div class="form-group">
-            <label>Classificação (automático)</label>
-            <div class="calc-display" id="ocClassificacaoDisplay">Aguardando horários</div>
-          </div>
-        </div>
-
-        <!-- Equipe -->
-        <div class="form-card">
-          <h4>Equipe</h4>
-          <div class="form-group">
-            <label>Plantão <span class="required">*</span></label>
-            <select id="ocPlantao" onchange="Ocorrencias.carregarFarmaceuticos()">
+            <label for="lotePlantao">Plantão <span class="required">*</span></label>
+            <select id="lotePlantao" required>
               <option value="">Selecione...</option>
               <option value="Diurno">Diurno</option>
               <option value="Noturno">Noturno</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Farmacêutico <span class="required">*</span></label>
-            <select id="ocFarmaceutico" onchange="Ocorrencias.carregarAssistentes()">
-              <option value="">Selecione o plantão primeiro</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <div class="checkbox-inline">
-              <input type="checkbox" id="ocErroFarmaceutico" onchange="Ocorrencias.toggleResponsavelErro()">
-              <label for="ocErroFarmaceutico">Erro do farmacêutico</label>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="btnContinuarEtapa1" type="button" disabled>
+            Continuar para a Etapa 2
+          </button>
+        </div>
+      </section>
+
+      <section class="form-card lote-etapa" id="loteEtapa2" aria-labelledby="loteItemTitulo" hidden>
+        <h4 id="loteItemTitulo">Adicionar item de erro</h4>
+        <form id="formItemLote">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="loteMedicamento">Medicamento <span class="required">*</span></label>
+              <select id="loteMedicamento" required><option value="">Selecione...</option></select>
+            </div>
+            <div class="form-group">
+              <label for="loteTipoErro">Tipo de erro <span class="required">*</span></label>
+              <select id="loteTipoErro" required><option value="">Selecione...</option></select>
+            </div>
+            <div class="form-group">
+              <label for="loteQuantidadePrescrita">Quantidade prescrita <span class="required">*</span></label>
+              <input type="number" id="loteQuantidadePrescrita" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+              <label for="loteQuantidadeDispensada">Quantidade dispensada</label>
+              <input type="number" id="loteQuantidadeDispensada" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="loteHoraPrescricao">Hora da prescrição</label>
+              <input type="time" id="loteHoraPrescricao">
+            </div>
+            <div class="form-group">
+              <label for="loteHoraDispensacao">Hora da dispensação</label>
+              <input type="time" id="loteHoraDispensacao">
+            </div>
+            <div class="form-group">
+              <label for="loteFarmaceutico">Farmacêutico <span class="required">*</span></label>
+              <select id="loteFarmaceutico" required>
+                <option value="">Selecione o plantão primeiro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="checkbox-inline">
+                <input type="checkbox" id="loteErroFarmaceutico">
+                <label for="loteErroFarmaceutico">Erro do farmacêutico</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="loteAssistente">Assistente <span class="required">*</span></label>
+              <select id="loteAssistente" required disabled>
+                <option value="">Selecione o farmacêutico primeiro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="loteObservacoes">Observações</label>
+              <textarea id="loteObservacoes" rows="3"></textarea>
             </div>
           </div>
-          <div class="form-group">
-            <label>Assistente</label>
-            <select id="ocAssistente">
-              <option value="">Selecione o farmacêutico primeiro</option>
-            </select>
+          <div class="form-actions">
+            <button class="btn btn-outline" id="btnVoltarIdentificacao" type="button">
+              Voltar à identificação
+            </button>
+            <button class="btn btn-primary" id="btnAdicionarItem" type="submit">
+              Adicionar à lista
+            </button>
+            <button class="btn btn-outline" id="btnVerPrevia" type="button" disabled>
+              Revisar itens (0)
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="form-card lote-etapa" id="loteEtapa3" aria-labelledby="loteRevisaoTitulo" hidden>
+        <div class="lote-preview-heading">
+          <div>
+            <h4 id="loteRevisaoTitulo">Revisão do lote</h4>
+            <p id="loteContagem" aria-live="polite">0 itens serão salvos</p>
           </div>
         </div>
-
-        <!-- Observações -->
-        <div class="form-card">
-          <h4>Observações</h4>
-          <div class="form-group">
-            <label>Observações (opcional)</label>
-            <textarea id="ocObservacoes" rows="4" placeholder="Informações adicionais..."></textarea>
-          </div>
+        <div id="loteItensLista" class="lote-itens-lista"></div>
+        <div class="form-actions">
+          <button class="btn btn-outline" id="btnVoltarItens" type="button">Voltar aos itens</button>
+          <button class="btn btn-primary" id="btnSalvarLote" type="button" disabled>Salvar Todos</button>
         </div>
-      </div>
-
-      <div class="form-actions">
-        <button class="btn btn-outline" onclick="Ocorrencias.limpar()">Limpar</button>
-        <button class="btn btn-primary" onclick="Ocorrencias.salvar()">💾 Salvar Ocorrência</button>
-      </div>
-    </div>
+      </section>
+    </section>
 
     <!-- ── PAGE: CONFIGURAÇÕES ────────────────────────────── -->
-    <div class="page" id="page-configuracoes">
-      <div class="config-tabs">
-        <button class="tab active" data-tab="medicamentos" onclick="Cruds.mudarTab('medicamentos')">Medicamentos</button>
-        <button class="tab" data-tab="tiposErro" onclick="Cruds.mudarTab('tiposErro')">Tipos de Erro</button>
-        <button class="tab" data-tab="setores" onclick="Cruds.mudarTab('setores')">Setores</button>
-        <button class="tab" data-tab="farmaceuticos" onclick="Cruds.mudarTab('farmaceuticos')">Farmacêuticos</button>
-        <button class="tab" data-tab="assistentes" onclick="Cruds.mudarTab('assistentes')">Assistentes</button>
+    <section class="page" id="page-configuracoes" aria-labelledby="configHeading">
+      <h3 class="visually-hidden" id="configHeading">Configurações</h3>
+      <div class="config-tabs" role="tablist" aria-label="Tipos de cadastro">
+        <button class="tab active" id="tab-medicamentos" role="tab" aria-selected="true"
+          aria-controls="configContent" data-tab="medicamentos"
+          onclick="window.Cruds && window.Cruds.mudarTab('medicamentos')">Medicamentos</button>
+        <button class="tab" id="tab-tiposErro" role="tab" aria-selected="false"
+          aria-controls="configContent" data-tab="tiposErro"
+          onclick="window.Cruds && window.Cruds.mudarTab('tiposErro')">Tipos de Erro</button>
+        <button class="tab" id="tab-setores" role="tab" aria-selected="false"
+          aria-controls="configContent" data-tab="setores"
+          onclick="window.Cruds && window.Cruds.mudarTab('setores')">Setores</button>
+        <button class="tab" id="tab-farmaceuticos" role="tab" aria-selected="false"
+          aria-controls="configContent" data-tab="farmaceuticos"
+          onclick="window.Cruds && window.Cruds.mudarTab('farmaceuticos')">Farmacêuticos</button>
+        <button class="tab" id="tab-assistentes" role="tab" aria-selected="false"
+          aria-controls="configContent" data-tab="assistentes"
+          onclick="window.Cruds && window.Cruds.mudarTab('assistentes')">Assistentes</button>
       </div>
-      <div id="configContent"></div>
-    </div>
+      <div id="configContent" role="tabpanel" aria-labelledby="tab-medicamentos"></div>
+    </section>
 
     <!-- ── PAGE: LOGS ─────────────────────────────────────── -->
-    <div class="page" id="page-logs">
-      <div class="filters-bar">
+    <section class="page" id="page-logs" aria-labelledby="logsHeading">
+      <h3 class="visually-hidden" id="logsHeading">Logs de auditoria</h3>
+      <div class="filters-bar" aria-label="Filtros dos logs">
         <div class="filter-group">
-          <label>Ação</label>
+          <label for="logFilterAcao">Ação</label>
           <select id="logFilterAcao">
             <option value="">Todas</option>
             <option value="Cadastro">Cadastro</option>
+            <option value="Cadastro em Lote">Cadastro em Lote</option>
             <option value="Edição">Edição</option>
             <option value="Exclusão">Exclusão</option>
             <option value="Exclusão (lógica)">Exclusão (lógica)</option>
@@ -383,7 +451,7 @@
           </select>
         </div>
         <div class="filter-group">
-          <label>Tabela</label>
+          <label for="logFilterTabela">Tabela</label>
           <select id="logFilterTabela">
             <option value="">Todas</option>
             <option value="ocorrencias">Ocorrências</option>
@@ -396,35 +464,34 @@
           </select>
         </div>
         <div class="filter-group">
-          <label>&nbsp;</label>
-          <button class="btn btn-primary" onclick="Logs.carregar()">🔍 Filtrar</button>
+          <label for="logFilterDataInicio">Período inicial</label>
+          <input type="date" id="logFilterDataInicio">
+        </div>
+        <div class="filter-group">
+          <label for="logFilterDataFim">Período final</label>
+          <input type="date" id="logFilterDataFim">
+        </div>
+        <div class="filter-group log-filter-actions">
+          <button class="btn btn-primary" type="button" onclick="window.Logs && window.Logs.aplicarFiltros()">Filtrar</button>
+          <button class="btn btn-outline" type="button" onclick="window.Logs && window.Logs.limparFiltros()">Limpar</button>
         </div>
       </div>
 
-      <div class="table-wrapper">
-        <div class="table-header">
-          <h3>Registro de Auditoria</h3>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Data/Hora</th>
-                <th>Usuário</th>
-                <th>Ação</th>
-                <th>Tabela</th>
-                <th>Registro</th>
-              </tr>
-            </thead>
-            <tbody id="logTableBody"></tbody>
-          </table>
-        </div>
+      <section class="log-panel table-wrapper" aria-labelledby="logPanelTitle">
+        <header class="table-header">
+          <div>
+            <h3 id="logPanelTitle">Registro de auditoria</h3>
+            <p id="logInfo" class="log-info" aria-live="polite">—</p>
+          </div>
+        </header>
+        <ol class="log-timeline" id="logTableBody" aria-label="Eventos de auditoria"></ol>
         <div class="table-footer">
-          <span id="logInfo">—</span>
-          <div class="pagination" id="logPagination"></div>
+          <span>Os eventos mais recentes aparecem primeiro.</span>
+          <button class="btn btn-outline" id="btnLogLoadMore" type="button"
+            onclick="window.Logs && window.Logs.carregarMais()" hidden>Carregar mais</button>
         </div>
-      </div>
-    </div>
+      </section>
+    </section>
   </main>
 
   <!-- ═══════════════════════════════════════════════════════
@@ -434,7 +501,7 @@
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-header">
         <h3 id="modalTitle">Título</h3>
-        <button class="modal-close" onclick="UI.fecharModal()">×</button>
+        <button class="modal-close" onclick="window.UI && window.UI.fecharModal()">×</button>
       </div>
       <div id="modalBody"></div>
     </div>
@@ -485,13 +552,37 @@
   <!-- ═══════════════════════════════════════════════════════
        SCRIPTS (ordem importa!)
        ═══════════════════════════════════════════════════════ -->
-  <script src="/js/state.js"></script>
-  <script src="/js/api.js"></script>
-  <script src="/js/ui.js"></script>
-  <script src="/js/dashboard.js"></script>
-  <script src="/js/ocorrencias.js"></script>
-  <script src="/js/cruds.js"></script>
-  <script src="/js/logs.js"></script>
-  <script src="/js/app.js"></script>
+  <!-- D11-B01: estado, cliente HTTP e utilitários de interface. -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D11-B01 ▼▼▼ -->
+  <!-- <script src="/js/state.js"></script> -->
+  <!-- <script src="/js/api.js"></script> -->
+  <!-- <script src="/js/ui.js"></script> -->
+  <!-- ▲▲▲ ATÉ AQUI — D11-B01 ▲▲▲ -->
+  <!-- D11-B02: inicialização e navegação SPA (depois dos módulos-base). -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D11-B02 ▼▼▼ -->
+  <!-- <script src="/js/app.js"></script> -->
+  <!-- ▲▲▲ ATÉ AQUI — D11-B02 ▲▲▲ -->
+  <!-- D12-B01/B02: habilitam dashboard e gráficos. -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D12-B01 ▼▼▼ -->
+  <!-- <script src="/js/dashboard.js"></script> -->
+  <!-- ▲▲▲ ATÉ AQUI — D12-B01 ▲▲▲ -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D12-B02 ▼▼▼ -->
+  <!-- <script src="/js/charts.js"></script> -->
+  <!-- ▲▲▲ ATÉ AQUI — D12-B02 ▲▲▲ -->
+  <!-- D13-B01/B02: habilitam operações, cadastros e auditoria. -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D13-B01 ▼▼▼ -->
+  <!-- <script src="/js/ocorrencias.js"></script> -->
+  <!-- <script src="/js/ocorrencias-lote.js"></script> -->
+  <!-- <script src="/js/ocorrencias-lista.js"></script> -->
+  <!-- ▲▲▲ ATÉ AQUI — D13-B01 ▲▲▲ -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D13-B02 ▼▼▼ -->
+  <!-- <script src="/js/cruds.js"></script> -->
+  <!-- <script src="/js/logs.js"></script> -->
+  <!-- ▲▲▲ ATÉ AQUI — D13-B02 ▲▲▲ -->
+  <!-- D14-B02: exportação de relatórios pelo frontend. -->
+  <!-- ▼▼▼ DESCOMENTE DAQUI — D14-B02 ▼▼▼ -->
+  <!-- <script src="/js/pdf.js"></script> -->
+  <!-- ▲▲▲ ATÉ AQUI — D14-B02 ▲▲▲ -->
 </body>
+<!-- CHECKPOINT: a estrutura HTML fica visível sem estilos/scripts; habilite links e módulos na ordem dos dias. -->
 </html>
